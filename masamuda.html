@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Panel Referal - [Nama Aplikasi]</title>
+    <title>Masa Muda Commision </title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
@@ -576,8 +576,8 @@
     <!-- Login Modal -->
     <div id="loginModal" class="modal">
         <div class="modal-content">
-            <h2>Selamat Datang!</h2>
-            <p>Silakan masukkan Username Anda untuk melanjutkan.</p>
+            <h2>Halo Kaum Muda!</h2>
+            <p>Silakan masukkan Username Kamu untuk melanjutkan.</p>
             <input type="text" id="usernameInput" placeholder="Username kamu" required>
             <button id="loginButton">Login</button>
             <div id="loginError" class="login-error"></div>
@@ -595,7 +595,7 @@
         <div class="container page-content active" id="dashboardPage">
     <div class="card">
         <div class="card-header">
-            <span>Saldo Komisi Anda</span>
+            <span>Saldo Komisi Kamu</span>
             <div>
                 <button class="refresh-button" onclick="refreshDashboardData()" title="Refresh Data">
                     <i class="fas fa-sync-alt"></i>
@@ -608,7 +608,7 @@
 
             <div class="card">
                 <div class="card-header">
-                    <span>Kode Referal Anda</span>
+                    <span>Kode Referal Kamu</span>
                     <i class="fas fa-share-alt"></i>
                 </div>
                 <div class="referral-code-wrapper">
@@ -627,13 +627,13 @@
 
             <div class="card">
                 <div class="card-header">
-                    <span>Milestone Komisi Anda</span>
+                    <span>Milestone Komisi Kamu</span>
                     <i class="fas fa-trophy"></i>
                 </div>
                 <p style="font-size: 0.9em; color: var(--light-text); text-align: center;">Raih target penggunaan untuk persentase komisi lebih besar!</p>
 
                 <div class="milestone-progress">
-                    <h3>Progres Komisi Anda</h3>
+                    <h3>Progres Komisi Kamu</h3>
                     <div class="milestone-track">
                         <div class="milestone-line">
                             <div class="milestone-line-fill" id="milestoneProgressBar"></div>
@@ -668,10 +668,11 @@
             <div class="caption-card">
                 <h3>Bagikan Sekarang & Dapatkan Komisi!</h3>
                 <p class="caption-text" id="shareCaption">
-Hai teman-teman! 👋 Dapatkan diskon 10% untuk layanan [Nama Aplikasi/Produk Anda] dengan menggunakan kode referal saya: *-----*
-Jangan lewatkan kesempatan ini! Klik link berikut: [Link Website Anda]
-Yuk gabung dan rasakan manfaatnya!
-#diskon #promo #referal #HematBareng #[NamaAplikasi]
+Ngopi hemat? Gampang banget! 😍
+Pakai kode referal: MASAMUDA10 dan dapetin diskon 10% setiap pembelian!
+Yang ngajak juga dapet 5% cashback tiap kamu ngopi — jadi dua-duanya cuan 💸
+Langsung datang ke tempat buat claim promonya juga biar gak ketinggalan vibe-nya!
+#MasamudaCoffee #DiskonNgopi #PromoBareng #NgopiCuan
                 </p>
                 <button class="caption-copy-button" onclick="copyCaption()">Salin Caption</button>
             </div>
@@ -702,12 +703,12 @@ Yuk gabung dan rasakan manfaatnya!
         <div class="container page-content" id="termsPage">
             <div class="card">
                 <h2>Ketentuan Umum Program Referal</h2>
-                <p>Dengan berpartisipasi dalam program referal [Nama Aplikasi], Anda dianggap telah membaca, memahami, dan menyetujui seluruh syarat dan ketentuan di bawah ini:</p>
+                <p>Dengan berpartisipasi dalam program referal [Nama Aplikasi], Kamu dianggap telah membaca, memahami, dan menyetujui seluruh syarat dan ketentuan di bawah ini:</p>
 
                 <h3>1. Keuntungan Referal</h3>
                 <ul>
-                    <li><strong>Pemberi Referal (Anda):</strong> Mendapatkan persentase komisi dari total pembayaran customer yang menggunakan kode referal Anda.</li>
-                    <li><strong>Penerima Referal (Customer Baru):</strong> Mendapatkan diskon <strong>10%</strong> dari total pembayaran saat pertama kali menggunakan kode referal Anda.</li>
+                    <li><strong>Pemberi Referal (Kamu):</strong> Mendapatkan persentase komisi dari total pembayaran customer yang menggunakan kode referal Kamu.</li>
+                    <li><strong>Penerima Referal (Customer Baru):</strong> Mendapatkan diskon <strong>10%</strong> dari total pembayaran saat pertama kali menggunakan kode referal Kamu.</li>
                 </ul>
 
                 <h3>2. Kode Referal</h3>
@@ -719,12 +720,12 @@ Yuk gabung dan rasakan manfaatnya!
 
                 <h3>3. Perhitungan Komisi</h3>
                 <ul>
-                    <li>Komisi dihitung berdasarkan persentase dari total pembayaran bersih (setelah diskon) yang dilakukan oleh customer yang menggunakan kode referal Anda.</li>
+                    <li>Komisi dihitung berdasarkan persentase dari total pembayaran bersih (setelah diskon) yang dilakukan oleh customer yang menggunakan kode referal Kamu.</li>
                     <li>Persentase komisi akan berubah sesuai dengan pencapaian milestone.</li>
                 </ul>
 
                 <h3>4. Milestone Komisi</h3>
-                <p>Anda dapat meningkatkan persentase komisi dengan mencapai target penggunaan kode referal:</p>
+                <p>Kamu dapat meningkatkan persentase komisi dengan mencapai target penggunaan kode referal:</p>
                 <ul>
                     <li><strong>Milestone Awal:</strong> 5% komisi (sejak aktivasi kode).</li>
                     <li><strong>Milestone Kedua:</strong> 8% komisi (setelah <strong>15</strong> kali penggunaan kode).</li>
@@ -734,7 +735,7 @@ Yuk gabung dan rasakan manfaatnya!
                 <h3>5. Perpanjangan Kode Referal</h3>
                 <ul>
                     <li>Pengguna yang telah mencapai Milestone Ketiga (10% komisi) berhak mengajukan perpanjangan masa berlaku kode referal.</li>
-                    <li>Pengajuan dilakukan melalui tombol WhatsApp yang tersedia di Panel Referal Anda.</li>
+                    <li>Pengajuan dilakukan melalui tombol WhatsApp yang tersedia di Panel Referal Kamu.</li>
                     <li>Persetujuan perpanjangan sepenuhnya menjadi kebijakan [Nama Aplikasi].</li>
                 </ul>
 
@@ -756,47 +757,47 @@ Yuk gabung dan rasakan manfaatnya!
         <div class="container page-content" id="guidePage">
             <div class="card">
                 <h2>Bagaimana Cara Menggunakan Fitur Referal?</h2>
-                <p>Ikuti langkah-langkah mudah di bawah ini untuk mulai mendapatkan komisi dari setiap referal Anda:</p>
+                <p>Ikuti langkah-langkah mudah di bawah ini untuk mulai mendapatkan komisi dari setiap referal Kamu:</p>
 
-                <h3>1. Salin Kode Referal Anda</h3>
+                <h3>1. Salin Kode Referal Kamu</h3>
                 <ol>
                     <li>Buka halaman <strong>Dashboard</strong>.</li>
-                    <li>Temukan bagian "Kode Referal Anda".</li>
-                    <li>Klik tombol <strong>"Salin Kode"</strong>. Kode referal Anda akan otomatis tersalin ke clipboard.</li>
+                    <li>Temukan bagian "Kode Referal Kamu".</li>
+                    <li>Klik tombol <strong>"Salin Kode"</strong>. Kode referal Kamu akan otomatis tersalin ke clipboard.</li>
                 </ol>
                 <div class="note">
-                    <strong>Tips:</strong> Kode ini memberikan diskon 10% untuk teman Anda saat pertama kali transaksi!
+                    <strong>Tips:</strong> Kode ini memberikan diskon 10% untuk teman Kamu saat pertama kali transaksi!
                 </div>
 
                 <h3>2. Bagikan Kode Referal</h3>
                 <ol start="4">
-                    <li>Di halaman <strong>Dashboard</strong>, scroll ke bawah hingga Anda menemukan bagian <strong>"Bagikan Sekarang!"</strong>.</li>
-                    <li>Klik tombol <strong>"Salin Caption"</strong> untuk menyalin contoh teks promosi lengkap dengan kode referal Anda.</li>
-                    <li>Bagikan kode dan caption tersebut ke teman, keluarga, atau media sosial Anda (WhatsApp, Instagram, Facebook, dll.).</li>
+                    <li>Di halaman <strong>Dashboard</strong>, scroll ke bawah hingga Kamu menemukan bagian <strong>"Bagikan Sekarang!"</strong>.</li>
+                    <li>Klik tombol <strong>"Salin Caption"</strong> untuk menyalin contoh teks promosi lengkap dengan kode referal Kamu.</li>
+                    <li>Bagikan kode dan caption tersebut ke teman, keluarga, atau media sosial Kamu (WhatsApp, Instagram, Facebook, dll.).</li>
                 </ol>
                 <div class="note">
-                    <strong>Ingat:</strong> Semakin banyak Anda berbagi, semakin besar peluang Anda mendapatkan komisi dan mencapai milestone!
+                    <strong>Ingat:</strong> Semakin banyak Kamu berbagi, semakin besar peluang Kamu mendapatkan komisi dan mencapai milestone!
                 </div>
 
-                <h3>3. Pantau Komisi & Milestone Anda</h3>
+                <h3>3. Pantau Komisi & Milestone Kamu</h3>
                 <ol start="7">
-                    <li>Kembali ke halaman <strong>Dashboard</strong> untuk melihat ringkasan <strong>Saldo Komisi</strong> dan <strong>Progres Milestone</strong> Anda.</li>
-                    <li>Kunjungi halaman <strong>Transaksi</strong> untuk melihat detail penggunaan kode referal Anda (tanggal, nama pengguna, komisi yang didapat).</li>
+                    <li>Kembali ke halaman <strong>Dashboard</strong> untuk melihat ringkasan <strong>Saldo Komisi</strong> dan <strong>Progres Milestone</strong> Kamu.</li>
+                    <li>Kunjungi halaman <strong>Transaksi</strong> untuk melihat detail penggunaan kode referal Kamu (tanggal, nama pengguna, komisi yang didapat).</li>
                 </ol>
 
                 <h3>4. Tingkatkan Komisi dengan Milestone</h3>
                 <ul>
-                    <li><strong>5% Komisi:</strong> Otomatis Anda dapatkan.</li>
+                    <li><strong>5% Komisi:</strong> Otomatis Kamu dapatkan.</li>
                     <li><strong>8% Komisi:</strong> Capai <strong>15</strong> kali penggunaan kode referal.</li>
                     <li><strong>10% Komisi:</strong> Capai <strong>30</strong> kali penggunaan kode referal.</li>
                 </ul>
                 <div class="note">
-                    Setelah mencapai 10% komisi, Anda bisa mengajukan perpanjangan masa aktif kode!
+                    Setelah mencapai 10% komisi, Kamu bisa mengajukan perpanjangan masa aktif kode!
                 </div>
 
                 <h3>5. Ajukan Perpanjangan Kode (Jika Sudah 10%)</h3>
                 <ol start="10">
-                    <li>Jika Anda sudah mencapai 30 kali penggunaan (10% komisi), tombol <strong>"Ajukan Perpanjangan Kode"</strong> akan muncul di bagian Milestone pada Dashboard.</li>
+                    <li>Jika Kamu sudah mencapai 30 kali penggunaan (10% komisi), tombol <strong>"Ajukan Perpanjangan Kode"</strong> akan muncul di bagian Milestone pada Dashboard.</li>
                     <li>Klik tombol tersebut untuk langsung terhubung ke admin kami via WhatsApp dan ajukan perpanjangan.</li>
                 </ol>
             </div>
@@ -836,8 +837,8 @@ Yuk gabung dan rasakan manfaatnya!
         }
 
         function copyCaption() {
-            const defaultCaption = `Hai teman-teman! 👋 Dapatkan diskon 10% untuk layanan [Nama Aplikasi/Produk Anda] dengan menggunakan kode referal saya: *${userReferralCode}*
-Jangan lewatkan kesempatan ini! Klik link berikut: [Link Website Anda]
+            const defaultCaption = `Hai teman-teman! 👋 Dapatkan diskon 10% untuk layanan [Nama Aplikasi/Produk Kamu] dengan menggunakan kode referal saya: *${userReferralCode}*
+Jangan lewatkan kesempatan ini! Klik link berikut: [Link Website Kamu]
 Yuk gabung dan rasakan manfaatnya!
 #diskon #promo #referal #HematBareng #[NamaAplikasi]`;
             navigator.clipboard.writeText(defaultCaption)
@@ -989,8 +990,8 @@ function updateDashboardUI(userData) {
     document.getElementById('extendReferralButton').href = whatsappLink;
 
     // Update share caption dengan kode dinamis
-    const defaultCaption = `Hai teman-teman! 👋 Dapatkan diskon 10% untuk layanan [Nama Aplikasi/Produk Anda] dengan menggunakan kode referal saya: *${userReferralCode}*
-Jangan lewatkan kesempatan ini! Klik link berikut: [Link Website Anda]
+    const defaultCaption = `Hai teman-teman! 👋 Dapatkan diskon 10% untuk layanan [Nama Aplikasi/Produk Kamu] dengan menggunakan kode referal saya: *${userReferralCode}*
+Jangan lewatkan kesempatan ini! Klik link berikut: [Link Website Kamu]
 Yuk gabung dan rasakan manfaatnya!
 #diskon #promo #referal #HematBareng #[NamaAplikasi]`;
     document.getElementById('shareCaption').innerText = defaultCaption;
@@ -1019,7 +1020,7 @@ async function fetchTransactions() {
         transactionList.innerHTML = `
             <div class="empty-state">
                 <i class="fas fa-user-lock"></i>
-                <p>Anda belum login. Silakan login untuk melihat transaksi.</p>
+                <p>Kamu belum login. Silakan login untuk melihat transaksi.</p>
             </div>
         `;
         return;
@@ -1098,8 +1099,8 @@ async function fetchTransactions() {
             transactionList.innerHTML = `
                 <div class="empty-state">
                     <i class="fas fa-exchange-alt"></i>
-                    <p>Belum ada transaksi penggunaan kode referal Anda.</p>
-                    <p style="font-size: 0.9em;">Ayo bagikan kode Anda sekarang!</p>
+                    <p>Belum ada transaksi penggunaan kode referal Kamu.</p>
+                    <p style="font-size: 0.9em;">Ayo bagikan kode Kamu sekarang!</p>
                 </div>
             `;
         }
