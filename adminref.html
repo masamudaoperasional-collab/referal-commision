@@ -1,0 +1,1661 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Mobile - Masa Muda Commission</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #2196F3;
+            --accent-color: #FF9800;
+            --bg-color-main: #f8f9fa;
+            --card-bg: #ffffff;
+            --text-color: #333;
+            --light-text: #666;
+            --border-color: #e0e0e0;
+            --dark-blue: #1976D2;
+            --error-color: #f44336;
+            --success-color: #4CAF50;
+            --warning-color: #FFC107;
+            --purple: #9C27B0;
+            --teal: #009688;
+            --radius: 16px;
+            --shadow: 0 4px 20px rgba(0,0,0,0.08);
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-color-main);
+            color: var(--text-color);
+            line-height: 1.6;
+            padding-bottom: 80px;
+        }
+
+        .mobile-header {
+            background: linear-gradient(135deg, var(--primary-color), var(--dark-blue));
+            color: white;
+            padding: 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 12px;
+        }
+
+        .btn {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .btn-primary {
+            background-color: var(--accent-color);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: #F57C00;
+        }
+
+        .btn-secondary {
+            background-color: rgba(255,255,255,0.2);
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background-color: rgba(255,255,255,0.3);
+        }
+
+        .main-content {
+            padding: 16px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            padding: 20px;
+            margin-bottom: 20px;
+            transition: var(--transition);
+        }
+
+        .card:hover {
+            box-shadow: 0 6px 25px rgba(0,0,0,0.1);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        .card-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--text-color);
+        }
+
+        .card-subtitle {
+            font-size: 0.9rem;
+            color: var(--light-text);
+            margin-bottom: 16px;
+        }
+
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: 500;
+            color: var(--text-color);
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px 16px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: var(--transition);
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 2px rgba(33, 150, 243, 0.2);
+        }
+
+        .form-control:disabled {
+            background-color: #f5f5f5;
+            color: #999;
+        }
+
+        .switch-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 16px;
+        }
+
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 50px;
+            height: 24px;
+        }
+
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: var(--transition);
+            border-radius: 24px;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 18px;
+            width: 18px;
+            left: 3px;
+            bottom: 3px;
+            background-color: white;
+            transition: var(--transition);
+            border-radius: 50%;
+        }
+
+        input:checked + .slider {
+            background-color: var(--success-color);
+        }
+
+        input:checked + .slider:before {
+            transform: translateX(26px);
+        }
+
+        .btn-submit {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, var(--primary-color), var(--dark-blue));
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            margin-top: 10px;
+        }
+
+        .btn-submit:hover {
+            opacity: 0.9;
+            transform: translateY(-2px);
+        }
+
+        .btn-submit:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .stats-container {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+            margin-bottom: 20px;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, var(--primary-color), var(--dark-blue));
+            color: white;
+            border-radius: var(--radius);
+            padding: 20px;
+            text-align: center;
+            transition: var(--transition);
+            box-shadow: var(--shadow);
+        }
+
+        .stat-card:nth-child(2) {
+            background: linear-gradient(135deg, var(--purple), #7B1FA2);
+        }
+
+        .stat-card:nth-child(3) {
+            background: linear-gradient(135deg, var(--teal), #00796B);
+        }
+
+        .stat-card:nth-child(4) {
+            background: linear-gradient(135deg, var(--accent-color), #F57C00);
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        }
+
+        .stat-value {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+
+        .list-container {
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .list-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px;
+            border-bottom: 1px solid var(--border-color);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .list-item:last-child {
+            border-bottom: none;
+        }
+
+        .list-item:hover {
+            background-color: rgba(0,0,0,0.02);
+        }
+
+        .item-info {
+            flex: 1;
+        }
+
+        .item-title {
+            font-weight: 500;
+            margin-bottom: 4px;
+        }
+
+        .item-subtitle {
+            font-size: 0.85rem;
+            color: var(--light-text);
+        }
+
+        .item-badge {
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+
+        .badge-success {
+            background-color: rgba(76, 175, 80, 0.15);
+            color: var(--success-color);
+        }
+
+        .badge-warning {
+            background-color: rgba(255, 193, 7, 0.15);
+            color: #FF8F00;
+        }
+
+        .badge-error {
+            background-color: rgba(244, 67, 54, 0.15);
+            color: var(--error-color);
+        }
+
+        .badge-info {
+            background-color: rgba(33, 150, 243, 0.15);
+            color: var(--primary-color);
+        }
+
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background-color: white;
+            display: flex;
+            justify-content: space-around;
+            padding: 12px 0;
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+            z-index: 100;
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            color: var(--light-text);
+            cursor: pointer;
+            transition: var(--transition);
+            padding: 8px 16px;
+            border-radius: 8px;
+        }
+
+        .nav-item.active {
+            color: var(--primary-color);
+            background-color: rgba(33, 150, 243, 0.1);
+        }
+
+        .nav-icon {
+            font-size: 1.2rem;
+        }
+
+        .nav-label {
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background-color: white;
+            border-radius: var(--radius);
+            width: 90%;
+            max-width: 500px;
+            max-height: 80vh;
+            overflow-y: auto;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            animation: slideUp 0.3s ease;
+        }
+
+        @keyframes slideUp {
+            from { transform: translateY(30px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .modal-header {
+            padding: 20px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--light-text);
+        }
+
+        .modal-body {
+            padding: 20px;
+        }
+
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 12px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .detail-label {
+            font-weight: 500;
+            color: var(--light-text);
+        }
+
+        .detail-value {
+            text-align: right;
+        }
+
+        /* Toast Notification */
+        .toast-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1100;
+        }
+
+        .toast {
+            background-color: white;
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            max-width: 350px;
+            animation: slideInRight 0.3s ease;
+            border-left: 4px solid var(--success-color);
+        }
+
+        .toast.error {
+            border-left-color: var(--error-color);
+        }
+
+        .toast.warning {
+            border-left-color: var(--warning-color);
+        }
+
+        .toast.info {
+            border-left-color: var(--primary-color);
+        }
+
+        .toast-icon {
+            font-size: 1.2rem;
+        }
+
+        .toast-success .toast-icon {
+            color: var(--success-color);
+        }
+
+        .toast-error .toast-icon {
+            color: var(--error-color);
+        }
+
+        .toast-warning .toast-icon {
+            color: var(--warning-color);
+        }
+
+        .toast-info .toast-icon {
+            color: var(--primary-color);
+        }
+
+        .toast-content {
+            flex: 1;
+        }
+
+        .toast-title {
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .toast-message {
+            font-size: 0.9rem;
+            color: var(--light-text);
+        }
+
+        .toast-close {
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: var(--light-text);
+        }
+
+        @keyframes slideInRight {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        /* Loading Indicator */
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255,255,255,.3);
+            border-radius: 50%;
+            border-top-color: #fff;
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: var(--light-text);
+        }
+
+        .empty-icon {
+            font-size: 3rem;
+            margin-bottom: 16px;
+            opacity: 0.5;
+        }
+
+        /* Commission settings */
+        .commission-settings {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .commission-card {
+            background-color: var(--card-bg);
+            border-radius: var(--radius);
+            padding: 16px;
+            text-align: center;
+            box-shadow: var(--shadow);
+        }
+
+        .commission-rate {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 6px;
+            color: var(--primary-color);
+        }
+
+        .commission-label {
+            font-size: 0.8rem;
+            color: var(--light-text);
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 480px) {
+            .stats-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .commission-settings {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="mobile-header">
+        <div class="header-title">Masa Muda Commission</div>
+        <div class="header-actions">
+            <button class="btn btn-secondary" id="refreshBtn">
+                <i class="fas fa-sync-alt"></i>
+            </button>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Transaction Tab -->
+        <section id="transaction-tab" class="tab-content active">
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">Input Transaksi Baru</h2>
+                </div>
+                <form id="transaction-form">
+                    <div class="form-group">
+                        <label class="form-label" for="userReferral">Kode Referral</label>
+                        <select class="form-control" id="userReferral" required>
+                            <option value="">Pilih Kode Referral</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label" for="receiver">Nama Penerima</label>
+                        <input type="text" class="form-control" id="receiver" placeholder="Masukkan nama penerima" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label" for="totalPayment">Total Pembayaran (minimal Rp 50.000)</label>
+                        <input type="number" class="form-control" id="totalPayment" min="50000" placeholder="Masukkan total pembayaran" required>
+                    </div>
+                    
+                    <div class="switch-container">
+                        <label class="switch">
+                            <input type="checkbox" id="autoDiscountToggle">
+                            <span class="slider"></span>
+                        </label>
+                        <span>Diskon Otomatis 10%</span>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label" for="discount">Diskon Diterima</label>
+                        <input type="number" class="form-control" id="discount" placeholder="Diskon akan dihitung otomatis" readonly>
+                    </div>
+                    
+                    <button type="submit" class="btn-submit" id="submitTransaction">
+                        <span id="submitTransactionText">Simpan Transaksi</span>
+                        <div class="loading" id="transactionLoading" style="display: none;"></div>
+                    </button>
+                </form>
+            </div>
+            
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">Riwayat Transaksi Terbaru</h2>
+                </div>
+                <div class="list-container" id="transactionsList">
+                    <!-- Transactions will be loaded here -->
+                </div>
+            </div>
+        </section>
+
+        <!-- User Tab -->
+        <section id="user-tab" class="tab-content">
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">Tambah User Baru</h2>
+                </div>
+                <form id="user-form">
+                    <div class="form-group">
+                        <label class="form-label" for="username">Username</label>
+                        <input type="text" class="form-control" id="username" placeholder="Masukkan username" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label" for="fullName">Nama Lengkap</label>
+                        <input type="text" class="form-control" id="fullName" placeholder="Masukkan nama lengkap" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label" for="referralCode">Kode Referral</label>
+                        <input type="text" class="form-control" id="referralCode" placeholder="Masukkan kode referral" required>
+                    </div>
+                    
+                    <button type="submit" class="btn-submit" id="submitUser">
+                        <span id="submitUserText">Tambah User</span>
+                        <div class="loading" id="userLoading" style="display: none;"></div>
+                    </button>
+                </form>
+            </div>
+            
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">Daftar User</h2>
+                </div>
+                <div class="list-container" id="usersList">
+                    <!-- Users will be loaded here -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Dashboard Tab -->
+        <section id="dashboard-tab" class="tab-content">
+            <div class="stats-container">
+                <div class="stat-card">
+                    <div class="stat-value" id="totalUsers">0</div>
+                    <div class="stat-label">Total User</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="totalTransactions">0</div>
+                    <div class="stat-label">Total Transaksi</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="totalCommission">Rp 0</div>
+                    <div class="stat-label">Biaya Komisi</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="activeCodes">0</div>
+                    <div class="stat-label">Kode Aktif</div>
+                </div>
+            </div>
+            
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">Pengaturan Komisi</h2>
+                </div>
+                <div class="commission-settings">
+                    <div class="commission-card">
+                        <div class="commission-rate">5%</div>
+                        <div class="commission-label">Default (0-14 penggunaan)</div>
+                    </div>
+                    <div class="commission-card">
+                        <div class="commission-rate">8%</div>
+                        <div class="commission-label">Milestone 1 (15-29 penggunaan)</div>
+                    </div>
+                    <div class="commission-card">
+                        <div class="commission-rate">10%</div>
+                        <div class="commission-label">Milestone 2 (30+ penggunaan)</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">User Teratas</h2>
+                </div>
+                <div class="list-container" id="topUsersList">
+                    <!-- Top users will be loaded here -->
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Bottom Navigation -->
+    <nav class="bottom-nav">
+        <div class="nav-item active" data-tab="transaction-tab">
+            <i class="fas fa-receipt nav-icon"></i>
+            <span class="nav-label">Transaksi</span>
+        </div>
+        <div class="nav-item" data-tab="user-tab">
+            <i class="fas fa-user-plus nav-icon"></i>
+            <span class="nav-label">Tambah User</span>
+        </div>
+        <div class="nav-item" data-tab="dashboard-tab">
+            <i class="fas fa-chart-bar nav-icon"></i>
+            <span class="nav-label">Dashboard</span>
+        </div>
+    </nav>
+
+    <!-- Modal for Details -->
+    <div class="modal" id="detailModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title" id="modalTitle">Detail</h3>
+                <button class="modal-close" id="modalClose">&times;</button>
+            </div>
+            <div class="modal-body" id="modalBody">
+                <!-- Modal content will be loaded here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Container -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <script>
+        // Global state variables
+        let allUsers = [];
+        let allTransactions = [];
+        let commissionSettings = {
+            default: 5,
+            milestone1: 8,
+            milestone2: 10
+        };
+        let autoDiscountEnabled = false;
+
+        // Webhook configuration
+        const WEBHOOK_BASE = 'https://n8n-uievozfh3got.bgxy.sumopod.my.id/webhook-test';
+        const WEBHOOK_GET_ALL_USERS = `${WEBHOOK_BASE}/get-all-users`;
+        const WEBHOOK_GET_ALL_TRANSACTIONS = `${WEBHOOK_BASE}/get-all-transactions`;
+        const WEBHOOK_ADD_USER = `${WEBHOOK_BASE}/add-user`;
+        const WEBHOOK_ADD_TRANSACTION = `${WEBHOOK_BASE}/add-transaction`;
+
+        // Initialize application
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeAdminPanel();
+            loadAllData();
+            setupEventListeners();
+        });
+
+        // Initialize the admin panel
+        function initializeAdminPanel() {
+            console.log('Admin panel initialized');
+            showNotification('Panel admin berhasil dimuat', 'success');
+        }
+
+        // Set up event listeners
+        function setupEventListeners() {
+            // Bottom navigation
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.addEventListener('click', function() {
+                    const tabId = this.getAttribute('data-tab');
+                    switchTab(tabId);
+                });
+            });
+
+            // Transaction form
+            document.getElementById('transaction-form').addEventListener('submit', function(e) {
+                e.preventDefault();
+                addNewTransaction();
+            });
+
+            // User form
+            document.getElementById('user-form').addEventListener('submit', function(e) {
+                e.preventDefault();
+                addNewUser();
+            });
+
+            // Auto discount toggle
+            document.getElementById('autoDiscountToggle').addEventListener('change', function() {
+                autoDiscountEnabled = this.checked;
+                toggleAutoDiscount();
+            });
+
+            // Total payment input
+            document.getElementById('totalPayment').addEventListener('input', function() {
+                if (autoDiscountEnabled) {
+                    calculateAutoDiscount();
+                }
+            });
+
+            // Refresh button
+            document.getElementById('refreshBtn').addEventListener('click', function() {
+                loadAllData();
+            });
+
+            // Modal close
+            document.getElementById('modalClose').addEventListener('click', function() {
+                closeModal();
+            });
+
+            // Close modal when clicking outside
+            document.getElementById('detailModal').addEventListener('click', function(e) {
+                if (e.target === this) {
+                    closeModal();
+                }
+            });
+        }
+
+        // Switch between tabs
+        function switchTab(tabId) {
+            // Update navigation
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            document.querySelector(`.nav-item[data-tab="${tabId}"]`).classList.add('active');
+
+            // Update content
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            document.getElementById(tabId).classList.add('active');
+        }
+
+        // Load all data from webhooks
+        async function loadAllData() {
+            showNotification('Memuat data...', 'info');
+            
+            try {
+                await Promise.all([
+                    loadUsersData(),
+                    loadTransactionsData()
+                ]);
+                
+                updateDashboardStats();
+                showNotification('Data berhasil dimuat', 'success');
+            } catch (error) {
+                console.error('Error loading data:', error);
+                showNotification('Gagal memuat data. Menggunakan data contoh.', 'warning');
+                
+                // Fallback to mock data
+                loadMockData();
+                updateDashboardStats();
+            }
+        }
+
+        // Load users data from webhook
+        async function loadUsersData() {
+            try {
+                const response = await fetch(WEBHOOK_GET_ALL_USERS);
+                if (!response.ok) throw new Error('Network response was not ok');
+                
+                const data = await response.json();
+                allUsers = data;
+                
+                // Update user dropdown
+                updateUserDropdown();
+                
+                // Render users list
+                renderUsersList();
+                
+                showNotification('Data user berhasil dimuat', 'success');
+            } catch (error) {
+                console.error('Error loading users:', error);
+                throw error;
+            }
+        }
+
+        // Load transactions data from webhook
+        async function loadTransactionsData() {
+            try {
+                const response = await fetch(WEBHOOK_GET_ALL_TRANSACTIONS);
+                if (!response.ok) throw new Error('Network response was not ok');
+                
+                const data = await response.json();
+                allTransactions = data;
+                
+                // Render transactions list
+                renderTransactionsList();
+                
+                showNotification('Data transaksi berhasil dimuat', 'success');
+            } catch (error) {
+                console.error('Error loading transactions:', error);
+                throw error;
+            }
+        }
+
+        // Update user dropdown in transaction form
+        function updateUserDropdown() {
+            const dropdown = document.getElementById('userReferral');
+            dropdown.innerHTML = '<option value="">Pilih Kode Referral</option>';
+            
+            allUsers.forEach(user => {
+                const option = document.createElement('option');
+                option.value = user.Kode_Referal || user.referral_code;
+                option.textContent = `${user.Kode_Referal || user.referral_code} - ${user.Nama_Lengkap || user.name}`;
+                dropdown.appendChild(option);
+            });
+        }
+
+        // Render users list
+        function renderUsersList() {
+            const container = document.getElementById('usersList');
+            
+            if (!allUsers || allUsers.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-icon">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <p>Tidak ada data user</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            container.innerHTML = '';
+            
+            allUsers.forEach(user => {
+                const userElement = document.createElement('div');
+                userElement.className = 'list-item';
+                userElement.addEventListener('click', () => showUserDetail(user));
+                
+                const status = user.Status_Kode || user.status;
+                let badgeClass = 'badge-warning';
+                
+                if (status === 'Aktif' || status === 'active') {
+                    badgeClass = 'badge-success';
+                } else if (status === 'inactive') {
+                    badgeClass = 'badge-error';
+                }
+                
+                userElement.innerHTML = `
+                    <div class="item-info">
+                        <div class="item-title">${user.Nama_Lengkap || user.name}</div>
+                        <div class="item-subtitle">${user.Username || user.username} | ${user.Kode_Referal || user.referral_code}</div>
+                    </div>
+                    <div class="item-badge ${badgeClass}">${status}</div>
+                `;
+                
+                container.appendChild(userElement);
+            });
+        }
+
+        // Render transactions list
+        function renderTransactionsList() {
+            const container = document.getElementById('transactionsList');
+            
+            if (!allTransactions || allTransactions.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-icon">
+                            <i class="fas fa-receipt"></i>
+                        </div>
+                        <p>Tidak ada data transaksi</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            container.innerHTML = '';
+            
+            // Sort transactions by date (newest first)
+            const sortedTransactions = [...allTransactions].sort((a, b) => {
+                return new Date(b.Tgl_Transaksi || b.date) - new Date(a.Tgl_Transaksi || a.date);
+            });
+            
+            // Show only recent transactions
+            const recentTransactions = sortedTransactions.slice(0, 10);
+            
+            recentTransactions.forEach(transaction => {
+                const transactionElement = document.createElement('div');
+                transactionElement.className = 'list-item';
+                transactionElement.addEventListener('click', () => showTransactionDetail(transaction));
+                
+                const status = transaction.Status_Komisi || transaction.status;
+                let badgeClass = 'badge-warning';
+                
+                if (status === 'Selesai' || status === 'completed') {
+                    badgeClass = 'badge-success';
+                } else if (status === 'cancelled') {
+                    badgeClass = 'badge-error';
+                }
+                
+                // Format date
+                const transactionDate = new Date(transaction.Tgl_Transaksi || transaction.date);
+                const formattedDate = formatDate(transactionDate);
+                
+                transactionElement.innerHTML = `
+                    <div class="item-info">
+                        <div class="item-title">${transaction.Nama_Pengguna_Referal || transaction.receiver}</div>
+                        <div class="item-subtitle">${formattedDate} | ${transaction.Kode_Referal_Digunakan || transaction.user_referal}</div>
+                    </div>
+                    <div class="item-badge ${badgeClass}">${status || 'Pending'}</div>
+                `;
+                
+                container.appendChild(transactionElement);
+            });
+        }
+
+        // Render top users for dashboard
+        function renderTopUsersList() {
+            const container = document.getElementById('topUsersList');
+            
+            if (!allUsers || allUsers.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-icon">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <p>Tidak ada data user</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            container.innerHTML = '';
+            
+            // Sort users by usage count (highest first)
+            const sortedUsers = [...allUsers].sort((a, b) => {
+                return (b.Jumlah_Penggunaan_Kode || b.usage_count || 0) - (a.Jumlah_Penggunaan_Kode || a.usage_count || 0);
+            });
+            
+            // Show only top 5 users
+            const topUsers = sortedUsers.slice(0, 5);
+            
+            topUsers.forEach(user => {
+                const userElement = document.createElement('div');
+                userElement.className = 'list-item';
+                userElement.addEventListener('click', () => showUserDetail(user));
+                
+                const usageCount = user.Jumlah_Penggunaan_Kode || user.usage_count || 0;
+                const commissionRate = calculateCommissionRate(usageCount);
+                
+                userElement.innerHTML = `
+                    <div class="item-info">
+                        <div class="item-title">${user.Nama_Lengkap || user.name}</div>
+                        <div class="item-subtitle">${user.Kode_Referal || user.referral_code} | ${usageCount} penggunaan</div>
+                    </div>
+                    <div class="item-badge badge-info">${commissionRate}%</div>
+                `;
+                
+                container.appendChild(userElement);
+            });
+        }
+
+        // Update dashboard statistics
+        function updateDashboardStats() {
+            // Total users
+            document.getElementById('totalUsers').textContent = allUsers ? allUsers.length : 0;
+            
+            // Total transactions
+            document.getElementById('totalTransactions').textContent = allTransactions ? allTransactions.length : 0;
+            
+            // Total commission
+            let totalCommission = 0;
+            if (allTransactions) {
+                allTransactions.forEach(transaction => {
+                    // Extract commission value from string if needed
+                    let commission = transaction.Komisi_Pemberi_Referal || transaction.commission;
+                    if (typeof commission === 'string') {
+                        // Try to extract numeric value from string
+                        const match = commission.match(/(\d+)/);
+                        commission = match ? parseInt(match[0]) : 0;
+                    }
+                    totalCommission += commission || 0;
+                });
+            }
+            document.getElementById('totalCommission').textContent = formatCurrency(totalCommission);
+            
+            // Active codes
+            const activeUsers = allUsers ? allUsers.filter(user => 
+                (user.Status_Kode === 'Aktif' || user.Status_Kode === 'active') && 
+                new Date(user.Tanggal_Kadaluarsa || user.expiry_date) > new Date()
+            ).length : 0;
+            document.getElementById('activeCodes').textContent = activeUsers;
+            
+            // Render top users
+            renderTopUsersList();
+        }
+
+        // Toggle auto discount
+        function toggleAutoDiscount() {
+            const discountField = document.getElementById('discount');
+            const totalPayment = document.getElementById('totalPayment').value;
+            
+            if (autoDiscountEnabled) {
+                calculateAutoDiscount();
+            } else {
+                discountField.value = '';
+            }
+        }
+
+        // Calculate auto discount (10%)
+        function calculateAutoDiscount() {
+            if (!autoDiscountEnabled) return;
+            
+            const totalPayment = parseFloat(document.getElementById('totalPayment').value) || 0;
+            const discount = totalPayment * 0.1;
+            
+            document.getElementById('discount').value = Math.round(discount);
+        }
+
+        // Calculate commission rate based on usage count
+        function calculateCommissionRate(usageCount) {
+            if (usageCount >= 30) return commissionSettings.milestone2;
+            if (usageCount >= 15) return commissionSettings.milestone1;
+            return commissionSettings.default;
+        }
+
+        // Add new transaction
+        async function addNewTransaction() {
+            const userReferral = document.getElementById('userReferral').value;
+            const receiver = document.getElementById('receiver').value;
+            const totalPayment = parseFloat(document.getElementById('totalPayment').value);
+            const discount = parseFloat(document.getElementById('discount').value) || 0;
+            
+            // Validation
+            if (!userReferral || !receiver || !totalPayment) {
+                showNotification('Harap isi semua field yang diperlukan', 'error');
+                return;
+            }
+            
+            if (totalPayment < 50000) {
+                showNotification('Total pembayaran minimal Rp 50.000', 'error');
+                return;
+            }
+            
+            // Find selected user
+            const selectedUser = allUsers.find(user => 
+                (user.Kode_Referal || user.referral_code) === userReferral
+            );
+            
+            if (!selectedUser) {
+                showNotification('User dengan kode referral tersebut tidak ditemukan', 'error');
+                return;
+            }
+            
+            // Calculate commission
+            const usageCount = selectedUser.Jumlah_Penggunaan_Kode || selectedUser.usage_count || 0;
+            const commissionRate = calculateCommissionRate(usageCount);
+            const netPayment = totalPayment - discount;
+            const commission = netPayment * (commissionRate / 100);
+            
+            // Prepare transaction data
+            const transactionData = {
+                Kode_Referal_Digunakan: userReferral,
+                Username_Pemberi_Referal: selectedUser.Username || selectedUser.username,
+                Nama_Pengguna_Referal: receiver,
+                Total_Pembayaran: totalPayment,
+                Diskon_Diterima: discount,
+                Total_Bayar_Bersih: netPayment,
+                Komisi_Pemberi_Referal: commission,
+                Status_Komisi: 'Selesai',
+                Tgl_Transaksi: new Date().toISOString().split('T')[0] // Current date in YYYY-MM-DD format
+            };
+            
+            // Show loading state
+            const submitBtn = document.getElementById('submitTransaction');
+            const btnText = document.getElementById('submitTransactionText');
+            const loading = document.getElementById('transactionLoading');
+            
+            btnText.style.display = 'none';
+            loading.style.display = 'inline-block';
+            submitBtn.disabled = true;
+            
+            try {
+                const response = await fetch(WEBHOOK_ADD_TRANSACTION, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(transactionData)
+                });
+                
+                if (!response.ok) throw new Error('Network response was not ok');
+                
+                const result = await response.json();
+                
+                showNotification('Transaksi berhasil ditambahkan', 'success');
+                
+                // Reset form
+                document.getElementById('transaction-form').reset();
+                document.getElementById('autoDiscountToggle').checked = false;
+                autoDiscountEnabled = false;
+                
+                // Reload data
+                loadAllData();
+            } catch (error) {
+                console.error('Error adding transaction:', error);
+                showNotification('Gagal menambahkan transaksi', 'error');
+            } finally {
+                // Reset button state
+                btnText.style.display = 'inline-block';
+                loading.style.display = 'none';
+                submitBtn.disabled = false;
+            }
+        }
+
+        // Add new user
+        async function addNewUser() {
+            const username = document.getElementById('username').value;
+            const fullName = document.getElementById('fullName').value;
+            const referralCode = document.getElementById('referralCode').value;
+            
+            // Validation
+            if (!username || !fullName || !referralCode) {
+                showNotification('Harap isi semua field', 'error');
+                return;
+            }
+            
+            // Check if username already exists
+            if (allUsers.some(user => (user.Username || user.username) === username)) {
+                showNotification('Username sudah digunakan', 'error');
+                return;
+            }
+            
+            // Check if referral code already exists
+            if (allUsers.some(user => (user.Kode_Referal || user.referral_code) === referralCode)) {
+                showNotification('Kode referral sudah digunakan', 'error');
+                return;
+            }
+            
+            // Prepare user data
+            const userData = {
+                Username: username,
+                Nama_Lengkap: fullName,
+                Kode_Referal: referralCode,
+                Jumlah_Penggunaan_Kode: 0,
+                Saldo_Komisi_Saat_Ini: 0,
+                Total_Komisi_Didapatkan: 0,
+                Status_Kode: 'active',
+                Tanggal_Aktivasi: new Date().toISOString().split('T')[0], // Current date
+                Tanggal_Kadaluarsa: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString().split('T')[0], // 30 days from now
+                Persentase_Komisi_Aktif: '5%'
+            };
+            
+            // Show loading state
+            const submitBtn = document.getElementById('submitUser');
+            const btnText = document.getElementById('submitUserText');
+            const loading = document.getElementById('userLoading');
+            
+            btnText.style.display = 'none';
+            loading.style.display = 'inline-block';
+            submitBtn.disabled = true;
+            
+            try {
+                const response = await fetch(WEBHOOK_ADD_USER, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(userData)
+                });
+                
+                if (!response.ok) throw new Error('Network response was not ok');
+                
+                const result = await response.json();
+                
+                showNotification('User berhasil ditambahkan', 'success');
+                
+                // Reset form
+                document.getElementById('user-form').reset();
+                
+                // Reload data
+                loadAllData();
+            } catch (error) {
+                console.error('Error adding user:', error);
+                showNotification('Gagal menambahkan user', 'error');
+            } finally {
+                // Reset button state
+                btnText.style.display = 'inline-block';
+                loading.style.display = 'none';
+                submitBtn.disabled = false;
+            }
+        }
+
+        // Show user detail in modal
+        function showUserDetail(user) {
+            const modal = document.getElementById('detailModal');
+            const modalTitle = document.getElementById('modalTitle');
+            const modalBody = document.getElementById('modalBody');
+            
+            modalTitle.textContent = 'Detail User';
+            
+            // Format expiry date
+            const expiryDate = new Date(user.Tanggal_Kadaluarsa || user.expiry_date);
+            const formattedExpiry = formatDate(expiryDate);
+            
+            // Calculate days until expiry
+            const today = new Date();
+            const daysUntilExpiry = Math.ceil((expiryDate - today) / (1000 * 60 * 60 * 24));
+            
+            modalBody.innerHTML = `
+                <div class="detail-row">
+                    <span class="detail-label">Username:</span>
+                    <span class="detail-value">${user.Username || user.username}</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Nama Lengkap:</span>
+                    <span class="detail-value">${user.Nama_Lengkap || user.name}</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Kode Referral:</span>
+                    <span class="detail-value">${user.Kode_Referal || user.referral_code}</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Status:</span>
+                    <span class="detail-value">
+                        <span class="item-badge ${(user.Status_Kode === 'Aktif' || user.Status_Kode === 'active') ? 'badge-success' : 'badge-error'}">
+                            ${user.Status_Kode || user.status}
+                        </span>
+                    </span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Jumlah Penggunaan:</span>
+                    <span class="detail-value">${user.Jumlah_Penggunaan_Kode || user.usage_count || 0}</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Komisi Aktif:</span>
+                    <span class="detail-value">${calculateCommissionRate(user.Jumlah_Penggunaan_Kode || user.usage_count || 0)}%</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Saldo Komisi:</span>
+                    <span class="detail-value">${formatCurrency(user.Saldo_Komisi_Saat_Ini || user.balance || 0)}</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Total Komisi:</span>
+                    <span class="detail-value">${formatCurrency(user.Total_Komisi_Didapatkan || user.total_commission || 0)}</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Tanggal Kadaluarsa:</span>
+                    <span class="detail-value">${formattedExpiry} (${daysUntilExpiry} hari lagi)</span>
+                </div>
+                ${user.Nomor_WhatsApp ? `
+                <div class="detail-row">
+                    <span class="detail-label">Nomor WhatsApp:</span>
+                    <span class="detail-value">${user.Nomor_WhatsApp}</span>
+                </div>
+                ` : ''}
+                ${user.Keterangan_Admin ? `
+                <div class="detail-row">
+                    <span class="detail-label">Keterangan Admin:</span>
+                    <span class="detail-value">${user.Keterangan_Admin}</span>
+                </div>
+                ` : ''}
+            `;
+            
+            modal.classList.add('active');
+        }
+
+        // Show transaction detail in modal
+        function showTransactionDetail(transaction) {
+            const modal = document.getElementById('detailModal');
+            const modalTitle = document.getElementById('modalTitle');
+            const modalBody = document.getElementById('modalBody');
+            
+            modalTitle.textContent = 'Detail Transaksi';
+            
+            // Format date with Jakarta time
+            const transactionDate = new Date(transaction.Tgl_Transaksi || transaction.date);
+            const formattedDate = formatDateWithTime(transactionDate);
+            
+            modalBody.innerHTML = `
+                <div class="detail-row">
+                    <span class="detail-label">ID Transaksi:</span>
+                    <span class="detail-value">${transaction.ID_Transaksi || transaction.id}</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Tanggal & Waktu:</span>
+                    <span class="detail-value">${formattedDate}</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Kode Referral:</span>
+                    <span class="detail-value">${transaction.Kode_Referal_Digunakan || transaction.user_referal}</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Username Pemberi:</span>
+                    <span class="detail-value">${transaction.Username_Pemberi_Referal || 'N/A'}</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Nama Penerima:</span>
+                    <span class="detail-value">${transaction.Nama_Pengguna_Referal || transaction.receiver}</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Total Pembayaran:</span>
+                    <span class="detail-value">${formatCurrency(transaction.Total_Pembayaran || transaction.total_payment)}</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Diskon Diterima:</span>
+                    <span class="detail-value">${formatCurrency(transaction.Diskon_Diterima || transaction.discount)}</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Total Bayar Bersih:</span>
+                    <span class="detail-value">${formatCurrency(transaction.Total_Bayar_Bersih || (transaction.total_payment - transaction.discount))}</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Komisi:</span>
+                    <span class="detail-value">${transaction.Komisi_Pemberi_Referal || transaction.commission}</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Status:</span>
+                    <span class="detail-value">
+                        <span class="item-badge ${(transaction.Status_Komisi === 'Selesai' || transaction.Status_Komisi === 'completed') ? 'badge-success' : 
+                            (transaction.Status_Komisi === 'cancelled' ? 'badge-error' : 'badge-warning')}">
+                            ${transaction.Status_Komisi || transaction.status || 'Pending'}
+                        </span>
+                    </span>
+                </div>
+            `;
+            
+            modal.classList.add('active');
+        }
+
+        // Close modal
+        function closeModal() {
+            document.getElementById('detailModal').classList.remove('active');
+        }
+
+        // Show notification toast
+        function showNotification(message, type = 'info') {
+            const toastContainer = document.getElementById('toastContainer');
+            const toast = document.createElement('div');
+            toast.className = `toast toast-${type}`;
+            
+            let icon = 'info-circle';
+            if (type === 'success') icon = 'check-circle';
+            if (type === 'error') icon = 'exclamation-circle';
+            if (type === 'warning') icon = 'exclamation-triangle';
+            
+            toast.innerHTML = `
+                <i class="fas fa-${icon} toast-icon"></i>
+                <div class="toast-content">
+                    <div class="toast-title">${type.charAt(0).toUpperCase() + type.slice(1)}</div>
+                    <div class="toast-message">${message}</div>
+                </div>
+                <button class="toast-close">&times;</button>
+            `;
+            
+            toastContainer.appendChild(toast);
+            
+            // Add close event
+            toast.querySelector('.toast-close').addEventListener('click', function() {
+                toast.remove();
+            });
+            
+            // Auto remove after 5 seconds
+            setTimeout(() => {
+                if (toast.parentNode) {
+                    toast.remove();
+                }
+            }, 5000);
+        }
+
+        // Format date to Indonesian format
+        function formatDate(date) {
+            return date.toLocaleDateString('id-ID', {
+                day: 'numeric',
+                month: 'long',
+                year: 'numeric'
+            });
+        }
+
+        // Format date with Jakarta time
+        function formatDateWithTime(date) {
+            // Convert to Jakarta time (UTC+7)
+            const jakartaTime = new Date(date.getTime() + (7 * 60 * 60 * 1000));
+            
+            return jakartaTime.toLocaleDateString('id-ID', {
+                day: 'numeric',
+                month: 'long',
+                year: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit',
+                timeZone: 'Asia/Jakarta'
+            });
+        }
+
+        // Format currency to Indonesian Rupiah
+        function formatCurrency(amount) {
+            return new Intl.NumberFormat('id-ID', {
+                style: 'currency',
+                currency: 'IDR',
+                minimumFractionDigits: 0
+            }).format(amount);
+        }
+
+        // Load mock data for development
+        function loadMockData() {
+            // Mock users
+            allUsers = [
+                {
+                    Username: "user123",
+                    Nama_Lengkap: "Budi Santoso",
+                    Kode_Referal: "MASAMUDA25",
+                    Tanggal_Aktivasi: "2024-11-12",
+                    Tanggal_Kadaluarsa: "2024-12-12",
+                    Status_Kode: "Aktif",
+                    Total_Komisi_Didapatkan: 4500,
+                    Saldo_Komisi_Saat_Ini: 4500,
+                    Jumlah_Penggunaan_Kode: 1,
+                    Persentase_Komisi_Aktif: 0.05,
+                    Nomor_WhatsApp: 628123456789,
+                    Keterangan_Admin: "Verifikasi via WA"
+                },
+                {
+                    Username: "Aziz",
+                    Nama_Lengkap: "maman abdurrahman",
+                    Kode_Referal: "masamudda123",
+                    Tanggal_Aktivasi: "2025-10-22",
+                    Tanggal_Kadaluarsa: "2025-11-21",
+                    Status_Kode: "active",
+                    Total_Komisi_Didapatkan: 4500,
+                    Saldo_Komisi_Saat_Ini: 4500,
+                    Jumlah_Penggunaan_Kode: 1,
+                    Persentase_Komisi_Aktif: 0.05,
+                    Nomor_WhatsApp: "",
+                    Keterangan_Admin: ""
+                }
+            ];
+            
+            // Mock transactions
+            allTransactions = [
+                {
+                    ID_Transaksi: "TXN-1761143185136",
+                    Tgl_Transaksi: "2025-10-22",
+                    Kode_Referal_Digunakan: "masamudda123",
+                    Username_Pemberi_Referal: "Aziz",
+                    Nama_Pengguna_Referal: "ajiz",
+                    Total_Pembayaran: 100000,
+                    Diskon_Diterima: 10000,
+                    Total_Bayar_Bersih: 90000,
+                    Komisi_Pemberi_Referal: 4500,
+                    Status_Komisi: ""
+                },
+                {
+                    ID_Transaksi: "TXN-1761143366047",
+                    Tgl_Transaksi: "2025-10-22",
+                    Kode_Referal_Digunakan: "MASAMUDA25",
+                    Username_Pemberi_Referal: "user123",
+                    Nama_Pengguna_Referal: "ajiz",
+                    Total_Pembayaran: 100000,
+                    Diskon_Diterima: 10000,
+                    Total_Bayar_Bersih: 90000,
+                    Komisi_Pemberi_Referal: "4500 (5% dari 90rb)",
+                    Status_Komisi: "Selesai"
+                },
+                {
+                    ID_Transaksi: "TXN-003",
+                    Tgl_Transaksi: "2024-12-05",
+                    Kode_Referal_Digunakan: "MASAMUDA25",
+                    Username_Pemberi_Referal: "user123",
+                    Nama_Pengguna_Referal: "Ana Wulindri",
+                    Total_Pembayaran: 100000,
+                    Diskon_Diterima: 10000,
+                    Total_Bayar_Bersih: 90000,
+                    Komisi_Pemberi_Referal: "9000 (10% dari 90rb)",
+                    Status_Komisi: "Selesai"
+                }
+            ];
+            
+            // Update UI with mock data
+            updateUserDropdown();
+            renderUsersList();
+            renderTransactionsList();
+        }
+    </script>
+</body>
+</html>
