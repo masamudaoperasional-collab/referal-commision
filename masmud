@@ -1,0 +1,1727 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Masa Muda Commision</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #4CAF50; /* Hijau Utama */
+            --accent-color: #FFC107; /* Kuning Aksen */
+            --bg-color-main: #4CAF50; /* Latar belakang hijau solid untuk body */
+            --card-bg: #ffffff;
+            --text-color: #333;
+            --light-text: #666;
+            --border-color: #e0e0e0;
+            --dark-green: #388E3C;
+            --error-color: #EF5350;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg-color-main);
+            color: var(--text-color);
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden; /* Mencegah scroll horizontal yang tidak diinginkan */
+        }
+        .container {
+            flex-grow: 1;
+            max-width: 500px;
+            margin: 0 auto;
+            padding: 20px;
+            padding-top: 0;
+            opacity: 1; /* Ubah menjadi 1 agar konten selalu terlihat */
+            transition: opacity 0.5s ease-in-out;
+        }
+        .header {
+            text-align: center;
+            padding: 20px 0;
+            margin-bottom: 20px;
+            background-color: var(--primary-color);
+            color: white;
+            border-bottom-left-radius: 20px;
+            border-bottom-right-radius: 20px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+        .header h1 {
+            margin: 0;
+            font-size: 1.8em;
+            font-weight: 600;
+        }
+        .card {
+            background-color: var(--card-bg);
+            border-radius: 20px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+            padding: 20px;
+            transition: transform 0.3s ease;
+        }
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            font-weight: 600;
+            font-size: 1.1em;
+            color: var(--dark-green);
+        }
+        .info-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            padding-bottom: 5px;
+            border-bottom: 1px dashed var(--border-color);
+        }
+        .info-item:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+        }
+        .info-item strong {
+            color: var(--text-color);
+            font-weight: 500;
+        }
+        .info-item span {
+            color: var(--light-text);
+            font-weight: 400;
+        }
+        .referral-code-wrapper {
+            background-color: #e8f5e9;
+            border: 1px dashed var(--primary-color);
+            padding: 15px;
+            border-radius: 12px;
+            text-align: center;
+            margin-top: 15px;
+            position: relative;
+        }
+        .referral-code {
+            font-family: 'Roboto Mono', monospace;
+            font-size: 1.7em;
+            font-weight: 700;
+            color: var(--primary-color);
+            letter-spacing: 2px;
+            margin-bottom: 10px;
+            display: block;
+        }
+        .copy-button {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 1em;
+            font-weight: 600;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+        .copy-button:active {
+            background-color: var(--dark-green);
+            transform: scale(0.98);
+        }
+        .copy-button:focus {
+            outline: none;
+        }
+
+        /* Milestone */
+        .milestone-progress {
+            background-color: #e8f5e9;
+            border-radius: 15px;
+            padding: 20px;
+            margin-top: 15px;
+            position: relative;
+            overflow: hidden;
+        }
+        .milestone-progress h3 {
+            margin-top: 0;
+            color: var(--dark-green);
+            font-size: 1.1em;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+        .milestone-track {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+            height: 60px;
+            margin-bottom: 10px;
+            padding: 0 10px;
+        }
+        .milestone-line {
+            position: absolute;
+            height: 4px;
+            background-color: var(--border-color);
+            width: calc(100% - 20px);
+            left: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            border-radius: 2px;
+            z-index: 1;
+        }
+        .milestone-line-fill {
+            position: absolute;
+            height: 100%;
+            background-color: var(--primary-color);
+            width: 0%;
+            border-radius: 2px;
+            transition: width 0.7s ease-in-out;
+        }
+        .milestone-point {
+            width: 20px;
+            height: 20px;
+            background-color: var(--border-color);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 0.7em;
+            font-weight: 700;
+            color: white;
+            position: relative;
+            z-index: 2;
+            transition: background-color 0.5s ease;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .milestone-point.active {
+            background-color: var(--primary-color);
+        }
+        .milestone-point.current {
+             background-color: var(--accent-color);
+             box-shadow: 0 0 0 4px rgba(255,193,7,0.4);
+        }
+        .milestone-label {
+            position: absolute;
+            top: 60px;
+            font-size: 0.8em;
+            color: var(--light-text);
+            text-align: center;
+            width: 80px;
+            left: 50%;
+            transform: translateX(-50%);
+            white-space: nowrap;
+        }
+        .milestone-label strong {
+            display: block;
+            color: var(--text-color);
+            font-weight: 600;
+        }
+        
+        .current-usage-display {
+            text-align: center;
+            margin-top: 50px;
+            font-size: 1em;
+            color: var(--dark-green);
+            font-weight: 500;
+        }
+        .current-usage-display span {
+            font-weight: 700;
+            font-size: 1.1em;
+            color: var(--text-color);
+        }
+
+        .cta-button {
+            display: block;
+            width: 100%;
+            padding: 14px;
+            background-color: var(--primary-color);
+            color: white;
+            text-align: center;
+            border-radius: 12px;
+            text-decoration: none;
+            font-weight: 600;
+            margin-top: 25px;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+        .cta-button:active {
+            background-color: var(--dark-green);
+            transform: scale(0.98);
+        }
+
+        /* Card Bagikan Sekarang */
+        .caption-card {
+            background-color: var(--card-bg);
+            color: var(--text-color);
+            border-radius: 20px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+            margin-top: 20px;
+            padding: 20px;
+            position: relative;
+            text-align: center;
+        }
+        .caption-card h3 {
+            margin-top: 0;
+            font-size: 1.2em;
+            color: var(--dark-green);
+            margin-bottom: 15px;
+            font-weight: 700;
+        }
+        .caption-text {
+            font-size: 0.95em;
+            color: var(--light-text);
+            margin-bottom: 20px;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            border: 1px dashed var(--border-color);
+            padding: 15px;
+            border-radius: 10px;
+            text-align: left;
+        }
+        .caption-copy-button {
+            background-color: var(--accent-color);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 1em;
+            font-weight: 600;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            width: calc(100% - 40px);
+        }
+        .caption-copy-button:active {
+            background-color: #FFB300;
+            transform: scale(0.98);
+        }
+
+        .footer-nav {
+            display: flex;
+            justify-content: space-around;
+            padding: 15px 0;
+            border-top: 1px solid var(--border-color);
+            background-color: var(--card-bg);
+            position: sticky;
+            bottom: 0;
+            width: 100%;
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.05);
+            z-index: 1000;
+            border-top-left-radius: 20px;
+            border-top-right-radius: 20px;
+        }
+        .footer-nav a {
+            color: var(--light-text);
+            text-decoration: none;
+            font-size: 0.8em;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            transition: color 0.3s ease;
+            font-weight: 500;
+        }
+        .footer-nav a.active, .footer-nav a:hover {
+            color: var(--primary-color);
+        }
+        .footer-nav i {
+            font-size: 1.5em;
+            margin-bottom: 5px;
+            transition: color 0.3s ease;
+        }
+
+        /* --- Login Modal Styles --- */
+        .modal {
+            display: none; /* Hidden by default */
+            position: fixed; /* Stay in place */
+            z-index: 2000; /* Sit on top */
+            left: 0;
+            top: 0;
+            width: 100%; /* Full width */
+            height: 100%; /* Full height */
+            overflow: auto; /* Enable scroll if needed */
+            background-color: rgba(0,0,0,0.6); /* Black w/ opacity */
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            transition: opacity 0.3s ease-in-out;
+        }
+        .modal.show {
+            display: flex;
+            opacity: 1;
+        }
+        .modal-content {
+            background-color: var(--card-bg);
+            margin: auto;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            width: 90%;
+            max-width: 400px;
+            text-align: center;
+            animation: slideIn 0.4s ease-out forwards;
+            position: relative;
+        }
+        @keyframes slideIn {
+            from {
+                transform: translateY(-50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+        .modal-content h2 {
+            color: var(--primary-color);
+            margin-top: 0;
+            margin-bottom: 20px;
+            font-size: 1.8em;
+            font-weight: 700;
+        }
+        .modal-content p {
+            color: var(--light-text);
+            margin-bottom: 25px;
+        }
+        .modal-content input[type="text"] {
+            width: calc(100% - 30px);
+            padding: 12px 15px;
+            margin-bottom: 20px;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            font-family: 'Inter', sans-serif;
+            font-size: 1em;
+            box-sizing: border-box;
+            transition: border-color 0.3s ease;
+        }
+        .modal-content input[type="text"]:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.2);
+        }
+        .modal-content button {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 1.1em;
+            font-weight: 600;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+        .modal-content button:active {
+            background-color: var(--dark-green);
+            transform: scale(0.98);
+        }
+        .login-error {
+            color: var(--error-color);
+            font-size: 0.9em;
+            margin-top: 15px;
+            height: 20px; /* Untuk menjaga layout tetap stabil */
+        }
+        .loading-spinner {
+            border: 4px solid rgba(255, 255, 255, 0.3);
+            border-top: 4px solid #fff;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            animation: spin 1s linear infinite;
+            display: inline-block;
+            vertical-align: middle;
+            margin-left: 10px;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Transaction Page Styles */
+        .transaction-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .transaction-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .transaction-item:last-child {
+            border-bottom: none;
+        }
+        .transaction-details {
+            flex-grow: 1;
+        }
+        .transaction-details .name {
+            font-weight: 600;
+            color: var(--text-color);
+        }
+        .transaction-details .date {
+            font-size: 0.85em;
+            color: var(--light-text);
+        }
+        .transaction-commission {
+            font-weight: 700;
+            color: var(--primary-color);
+            font-size: 1.1em;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: var(--light-text);
+            font-size: 1.1em;
+        }
+        .empty-state i {
+            font-size: 3em;
+            color: var(--border-color);
+            margin-bottom: 15px;
+        }
+
+        .loading-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: var(--light-text);
+        }
+
+        /* Terms & Guide Page Styles */
+        .card h2 {
+            color: var(--primary-color);
+            font-size: 1.4em;
+            margin-top: 0;
+            margin-bottom: 15px;
+        }
+        .card h3 {
+            color: var(--text-color);
+            font-size: 1.1em;
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+        .card p, .card ul, .card ol {
+            font-size: 0.95em;
+            color: var(--light-text);
+            margin-bottom: 10px;
+        }
+        .card ol {
+            padding-left: 20px;
+        }
+        .card ol li {
+            margin-bottom: 10px;
+        }
+        .card ul {
+            padding-left: 20px;
+            list-style-type: disc;
+        }
+        .card ul li {
+            margin-bottom: 5px;
+        }
+        .note {
+            background-color: #fffde7;
+            border-left: 4px solid var(--accent-color);
+            padding: 10px 15px;
+            margin-top: 20px;
+            border-radius: 5px;
+            font-size: 0.9em;
+            color: var(--text-color);
+        }
+        .note strong {
+            color: var(--accent-color);
+        }
+
+        /* Page Content - PERBAIKAN UTAMA DI SINI */
+        .page-content {
+            display: none;
+        }
+        .page-content.active {
+            display: block;
+        }
+
+        /* Container untuk semua halaman */
+        .main-container {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        /* Refresh Button Styles */
+        .refresh-button {
+            background: none;
+            border: none;
+            color: var(--primary-color);
+            cursor: pointer;
+            padding: 5px 8px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            margin-right: 10px;
+        }
+
+        .refresh-button:hover {
+            background-color: rgba(76, 175, 80, 0.1);
+            transform: rotate(90deg);
+        }
+
+        .refresh-button:active {
+            transform: rotate(180deg);
+        }
+
+        .refresh-button.loading {
+            animation: spin 1s linear infinite;
+            pointer-events: none;
+        }
+
+        .card-header > div {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .current-commission-display {
+            text-align: center;
+            margin-top: 10px;
+            font-weight: 600;
+            color: var(--primary-color);
+            font-size: 1.1em;
+            padding: 8px;
+            background-color: #e8f5e9;
+            border-radius: 8px;
+            border: 1px solid var(--primary-color);
+        }
+
+        /* Notification Styles */
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background-color: var(--primary-color);
+            color: white;
+            padding: 15px 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            z-index: 3000;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transform: translateX(150%);
+            transition: transform 0.3s ease;
+        }
+
+        .notification.show {
+            transform: translateX(0);
+        }
+
+        .notification.error {
+            background-color: var(--error-color);
+        }
+
+        .notification.warning {
+            background-color: var(--accent-color);
+        }
+
+        .notification.info {
+            background-color: #2196F3;
+        }
+
+        .notification-icon {
+            font-size: 1.2em;
+        }
+
+        /* Detail Modal Styles */
+        .detail-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            z-index: 2500;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .detail-modal.show {
+            display: flex;
+        }
+
+        .detail-modal-content {
+            background-color: var(--card-bg);
+            width: 90%;
+            max-width: 500px;
+            border-radius: 20px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            position: relative;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        .detail-modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .detail-modal-title {
+            font-size: 1.3em;
+            font-weight: 600;
+            color: var(--primary-color);
+            margin: 0;
+        }
+
+        .detail-modal-close {
+            background: none;
+            border: none;
+            font-size: 1.5em;
+            color: var(--light-text);
+            cursor: pointer;
+        }
+
+        .detail-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 12px;
+            padding-bottom: 8px;
+            border-bottom: 1px dashed var(--border-color);
+        }
+
+        .detail-item:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+        }
+
+        .detail-label {
+            font-weight: 500;
+            color: var(--text-color);
+        }
+
+        .detail-value {
+            color: var(--light-text);
+            text-align: right;
+            max-width: 60%;
+            word-break: break-word;
+        }
+
+        .detail-section {
+            margin-bottom: 25px;
+        }
+
+        .detail-section-title {
+            font-size: 1.1em;
+            font-weight: 600;
+            color: var(--dark-green);
+            margin-bottom: 15px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        /* WhatsApp Modal Styles */
+        .whatsapp-modal-options {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .whatsapp-option {
+            background-color: #f5f5f5;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .whatsapp-option:hover {
+            background-color: #e8f5e9;
+            border-color: var(--primary-color);
+        }
+
+        .whatsapp-option-title {
+            font-weight: 600;
+            color: var(--text-color);
+            margin-bottom: 5px;
+        }
+
+        .whatsapp-option-desc {
+            font-size: 0.9em;
+            color: var(--light-text);
+        }
+
+        .whatsapp-button {
+            background-color: #25D366;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 1em;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 10px;
+            transition: background-color 0.3s ease;
+        }
+
+        .whatsapp-button:hover {
+            background-color: #128C7E;
+        }
+    </style>
+</head>
+<body>
+    <!-- Login Modal -->
+    <div id="loginModal" class="modal">
+        <div class="modal-content">
+            <h2>Halo Kaum Muda!</h2>
+            <p>Silakan masukkan Username Kamu untuk melanjutkan.</p>
+            <input type="text" id="usernameInput" placeholder="Username kamu" required>
+            <button id="loginButton">Login</button>
+            <div id="loginError" class="login-error"></div>
+        </div>
+    </div>
+
+    <!-- Detail Modal -->
+    <div id="detailModal" class="detail-modal">
+        <div class="detail-modal-content">
+            <div class="detail-modal-header">
+                <h3 class="detail-modal-title" id="detailModalTitle">Detail Informasi</h3>
+                <button class="detail-modal-close" id="detailModalClose">&times;</button>
+            </div>
+            <div id="detailModalContent">
+                <!-- Detail content akan dimuat di sini -->
+            </div>
+        </div>
+    </div>
+
+    <!-- WhatsApp Modal -->
+    <div id="whatsappModal" class="modal">
+        <div class="modal-content">
+            <h2>Hubungi Admin</h2>
+            <p>Pilih jenis pesan yang ingin dikirim:</p>
+            <div class="whatsapp-modal-options">
+                <div class="whatsapp-option" onclick="openWhatsApp('pengajuan')">
+                    <div class="whatsapp-option-title">Pengajuan Umum</div>
+                    <div class="whatsapp-option-desc">Untuk pertanyaan umum, pencairan komisi, atau masalah lainnya</div>
+                </div>
+                <div class="whatsapp-option" onclick="openWhatsApp('perpanjangan')">
+                    <div class="whatsapp-option-title">Perpanjangan Kode</div>
+                    <div class="whatsapp-option-desc">Untuk mengajukan perpanjangan masa aktif kode referral</div>
+                </div>
+            </div>
+            <button class="whatsapp-button" onclick="closeWhatsAppModal()">
+                <i class="fab fa-whatsapp"></i> Tutup
+            </button>
+        </div>
+    </div>
+
+    <!-- Notification -->
+    <div id="notification" class="notification">
+        <i class="fas fa-check-circle notification-icon"></i>
+        <span id="notificationMessage">Pesan notifikasi</span>
+    </div>
+
+    <!-- Header -->
+    <div class="header">
+        <h1 id="pageTitle">Masa Muda Commision</h1>
+    </div>
+
+    <!-- Main Container untuk semua halaman -->
+    <div class="main-container">
+        <!-- Dashboard Page -->
+        <div class="container page-content active" id="dashboardPage">
+            <div class="card">
+                <div class="card-header">
+                    <span>Saldo Komisi Kamu</span>
+                    <div>
+                        <button class="refresh-button" onclick="refreshDashboardData()" title="Refresh Data">
+                            <i class="fas fa-sync-alt"></i>
+                        </button>
+                        <i class="fas fa-wallet"></i>
+                    </div>
+                </div>
+                <h2 id="userCommissionBalance" style="text-align: center; color: var(--primary-color); font-size: 2.2em; margin: 10px 0; font-weight: 700;">Rp 0</h2>
+                <button class="copy-button" style="width: 100%; margin-top: 10px;" onclick="showBalanceDetail()">Lihat Detail</button>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <span>Kode Referal Kamu</span>
+                    <i class="fas fa-share-alt"></i>
+                </div>
+                <div class="referral-code-wrapper">
+                    <span id="myReferralCode" class="referral-code">-----</span>
+                    <button class="copy-button" onclick="copyReferralCode()">Salin Kode</button>
+                </div>
+                <div class="info-item" style="margin-top: 20px;">
+                    <span>Diskon untuk Penerima</span>
+                    <strong>10%</strong>
+                </div>
+                <div class="info-item">
+                    <span>Kadaluarsa</span>
+                    <strong id="referralExpiry">Memuat...</strong>
+                </div>
+                <button class="copy-button" style="width: 100%; margin-top: 10px;" onclick="showReferralDetail()">Lihat Detail</button>
+                <button class="whatsapp-button" style="width: 100%; margin-top: 10px;" onclick="showWhatsAppModal()">
+                    <i class="fab fa-whatsapp"></i> Hubungi Admin
+                </button>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <span>Milestone Komisi Kamu</span>
+                    <i class="fas fa-trophy"></i>
+                </div>
+                <p style="font-size: 0.9em; color: var(--light-text); text-align: center;">Raih target penggunaan untuk persentase komisi lebih besar!</p>
+
+                <div class="milestone-progress">
+                    <h3>Progres Komisi Kamu</h3>
+                    <div class="milestone-track">
+                        <div class="milestone-line">
+                            <div class="milestone-line-fill" id="milestoneProgressBar"></div>
+                        </div>
+                        <!-- Poin 0% - 5% -->
+                        <div class="milestone-point" style="left: 0%;" id="point0">5%</div>
+                        <!-- Poin 50% (15/30) - 8% -->
+                        <div class="milestone-point" style="left: 50%;" id="point15">8%</div>
+                        <!-- Poin 100% (30/30) - 10% -->
+                        <div class="milestone-point" style="left: 100%;" id="point30">10%</div>
+
+                        <div class="milestone-label" style="left: 0%;">
+                            <strong>0-14 Penggunaan</strong>
+                            <span>Komisi 5%</span>
+                        </div>
+                        <div class="milestone-label" style="left: 50%;">
+                            <strong>15-29 Penggunaan</strong>
+                            <span>Komisi 8%</span>
+                        </div>
+                        <div class="milestone-label" style="left: 100%;">
+                            <strong>30+ Penggunaan</strong>
+                            <span>Komisi 10%</span>
+                        </div>
+                    </div>
+                    <div class="current-usage-display">
+                        Penggunaan saat ini: <span id="currentUsageDisplay">0</span> transaksi
+                    </div>
+                    <div class="current-commission-display">
+                        Komisi saat ini: <span id="currentCommissionRate">5%</span>
+                    </div>
+                </div>
+                <button class="copy-button" style="width: 100%; margin-top: 10px;" onclick="showMilestoneDetail()">Lihat Detail</button>
+                <button class="whatsapp-button" style="width: 100%; margin-top: 10px; display: none;" id="extendReferralButton" onclick="showWhatsAppModalForExtension()">
+                    <i class="fab fa-whatsapp"></i> Ajukan Perpanjangan Kode
+                </button>
+            </div>
+
+            <div class="caption-card">
+                <h3>Bagikan Sekarang & Dapatkan Komisi!</h3>
+                <p class="caption-text" id="shareCaption">
+Ngopi hemat? Gampang banget! 😍
+Pakai kode referal: <span id="captionReferralCode">-----</span> dan dapetin diskon 10% setiap pembelian!
+Yang ngajak juga dapet 5% cashback tiap kamu ngopi — jadi dua-duanya cuan 💸
+Langsung datang ke tempat buat claim promonya juga biar gak ketinggalan vibe-nya!
+#MasamudaCoffee #DiskonNgopi #PromoBareng #NgopiCuan
+                </p>
+                <button class="caption-copy-button" onclick="copyCaption()">Salin Caption</button>
+                <button class="copy-button" style="width: 100%; margin-top: 10px;" onclick="showShareDetail()">Lihat Detail</button>
+            </div>
+        </div>
+
+        <!-- Transactions Page -->
+        <div class="container page-content" id="transactionsPage">
+            <div class="card">
+                <div class="card-header">
+                    <span>Riwayat Penggunaan Kode</span>
+                    <div>
+                        <button class="refresh-button" onclick="fetchTransactions()" title="Refresh Transaksi">
+                            <i class="fas fa-sync-alt"></i>
+                        </button>
+                        <i class="fas fa-list-alt"></i>
+                    </div>
+                </div>
+                <ul class="transaction-list" id="transactionList">
+                    <div class="loading-state">
+                        <i class="fas fa-spinner fa-spin"></i> Memuat transaksi...
+                    </div>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Guide Page -->
+        <div class="container page-content" id="guidePage">
+            <div class="card">
+                <h2>Panduan Lengkap Program Referal</h2>
+                <p>Ikuti panduan lengkap di bawah ini untuk memaksimalkan keuntungan dari program referal Masa Muda Commision:</p>
+
+                <h3>1. Cara Menggunakan Program Referal</h3>
+                <ol>
+                    <li>Login ke akun Anda di panel customer Masa Muda Commission.</li>
+                    <li>Salin kode referral yang tertera di dashboard.</li>
+                    <li>Bagikan kode referral tersebut kepada teman, keluarga, atau melalui media sosial.</li>
+                    <li>Ketika seseorang menggunakan kode referral Anda untuk bertransaksi, Anda akan mendapatkan komisi.</li>
+                    <li>Pantau progress milestone dan saldo komisi Anda secara berkala.</li>
+                </ol>
+
+                <h3>2. Ketentuan Umum Program Referal</h3>
+                <p>Dengan berpartisipasi dalam program referal Masa Muda Commision, Anda dianggap telah membaca, memahami, dan menyetujui seluruh syarat dan ketentuan di bawah ini:</p>
+                
+                <h4>Keuntungan Referal</h4>
+                <ul>
+                    <li><strong>Pemberi Referal (Anda):</strong> Mendapatkan persentase komisi dari total pembayaran customer yang menggunakan kode referal Anda.</li>
+                    <li><strong>Penerima Referal (Customer Baru):</strong> Mendapatkan diskon <strong>10%</strong> dari total pembayaran saat pertama kali menggunakan kode referal Anda.</li>
+                </ul>
+
+                <h4>Kode Referal</h4>
+                <ul>
+                    <li>Setiap pengguna akan memiliki satu kode referal unik.</li>
+                    <li>Kode referal berlaku selama <strong>1 bulan (30 hari)</strong> terhitung sejak tanggal aktivasi.</li>
+                    <li>Tidak ada batas maksimal penggunaan kode referal oleh customer yang berbeda selama masa berlaku kode masih aktif.</li>
+                </ul>
+
+                <h4>Perhitungan Komisi</h4>
+                <ul>
+                    <li>Komisi dihitung berdasarkan persentase dari total pembayaran bersih (setelah diskon) yang dilakukan oleh customer yang menggunakan kode referal Anda.</li>
+                    <li>Persentase komisi akan berubah sesuai dengan pencapaian milestone.</li>
+                    <li><strong>Minimal transaksi yang berlaku:</strong> Hanya transaksi dengan nilai pembelian minimum <strong>Rp 50.000</strong> yang akan dihitung untuk komisi dan milestone.</li>
+                </ul>
+
+                <h3>3. Milestone Komisi</h3>
+                <p>Anda dapat meningkatkan persentase komisi dengan mencapai target penggunaan kode referal:</p>
+                <ul>
+                    <li><strong>Milestone Awal:</strong> 5% komisi (sejak aktivasi kode).</li>
+                    <li><strong>Milestone Kedua:</strong> 8% komisi (setelah <strong>15</strong> kali penggunaan kode).</li>
+                    <li><strong>Milestone Ketiga:</strong> 10% komisi (setelah <strong>30</strong> kali penggunaan kode).</li>
+                </ul>
+
+                <h3>4. Perpanjangan Kode Referal</h3>
+                <ul>
+                    <li>Pengguna yang telah mencapai Milestone Ketiga (10% komisi) berhak mengajukan perpanjangan masa berlaku kode referal.</li>
+                    <li>Pengajuan dilakukan melalui tombol WhatsApp yang tersedia di Panel Referal Anda.</li>
+                    <li>Persetujuan perpanjangan sepenuhnya menjadi kebijakan Masa Muda Commision.</li>
+                </ul>
+
+                <h3>5. Penarikan Komisi</h3>
+                <ul>
+                    <li>Saldo komisi dapat dicairkan <strong>ketika masa kadaluarsa kode referral habis</strong>.</li>
+                    <li>Proses pencairan dilakukan dengan menghubungi admin melalui WhatsApp.</li>
+                </ul>
+
+                <h3>6. Tips Meningkatkan Penggunaan Kode Referral</h3>
+                <ul>
+                    <li>Bagikan kode referral melalui WhatsApp, Instagram, atau media sosial lainnya.</li>
+                    <li>Gunakan template pesan yang sudah disediakan untuk memudahkan berbagi.</li>
+                    <li>Jelaskan manfaat menggunakan kode referral kepada calon pengguna.</li>
+                    <li>Ingatkan teman dan keluarga tentang kode referral Anda secara berkala.</li>
+                </ul>
+
+                <h3>7. Cara Melacak Transaksi</h3>
+                <p>Anda dapat melacak semua transaksi yang menggunakan kode referral Anda di halaman "Transaksi". Setiap transaksi akan menampilkan nama pengguna, tanggal transaksi, dan jumlah komisi yang Anda terima.</p>
+
+                <h3>8. Cara Mencairkan Komisi</h3>
+                <ol>
+                    <li>Tunggu hingga masa berlaku kode referral habis.</li>
+                    <li>Hubungi admin melalui WhatsApp menggunakan tombol "Hubungi Admin".</li>
+                    <li>Berikan informasi akun dan jumlah yang ingin dicairkan.</li>
+                    <li>Tunggu konfirmasi dari admin dan proses pencairan.</li>
+                </ol>
+
+                <h3>9. Ketentuan Lain</h3>
+                <ul>
+                    <li>Masa Muda Commision berhak mengubah syarat dan ketentuan ini sewaktu-waktu tanpa pemberitahuan sebelumnya.</li>
+                    <li>Setiap bentuk kecurangan atau penyalahgunaan program referal akan mengakibatkan pembatalan komisi dan penangguhan akun.</li>
+                    <li>Transaksi dengan nilai di bawah <strong>Rp 50.000</strong> tidak akan dihitung dalam perhitungan komisi dan milestone.</li>
+                </ul>
+
+                <div class="note">
+                    <strong>Informasi lebih lanjut:</strong> Jika Anda memiliki pertanyaan atau membutuhkan bantuan, jangan ragu untuk menghubungi admin melalui tombol "Hubungi Admin" yang tersedia di dashboard.
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer Navigation -->
+    <div class="footer-nav">
+        <a href="#" class="active" id="navDashboard"><i class="fas fa-home"></i> Dashboard</a>
+        <a href="#" id="navTransactions"><i class="fas fa-history"></i> Transaksi</a>
+        <a href="#" id="navGuide"><i class="fas fa-question-circle"></i> Panduan</a>
+    </div>
+
+    <script>
+        // Global State
+        let currentUser = null;
+        let userData = null;
+        let userTransactions = [];
+        let whatsappOption = 'pengajuan';
+        
+        // Webhook URLs
+        const WEBHOOK_USER_DATA = 'https://n8n-uievozfh3got.bgxy.sumopod.my.id/webhook/get-user-data';
+        const WEBHOOK_TRANSACTIONS = 'https://n8n-uievozfh3got.bgxy.sumopod.my.id/webhook/get-data-transactions';
+
+        // DOM Elements
+        const loginModal = document.getElementById('loginModal');
+        const usernameInput = document.getElementById('usernameInput');
+        const loginButton = document.getElementById('loginButton');
+        const loginError = document.getElementById('loginError');
+        
+        const detailModal = document.getElementById('detailModal');
+        const detailModalTitle = document.getElementById('detailModalTitle');
+        const detailModalContent = document.getElementById('detailModalContent');
+        const detailModalClose = document.getElementById('detailModalClose');
+        
+        const whatsappModal = document.getElementById('whatsappModal');
+        
+        const notification = document.getElementById('notification');
+        const notificationMessage = document.getElementById('notificationMessage');
+        
+        const pageContents = document.querySelectorAll('.page-content');
+        const navLinks = document.querySelectorAll('.footer-nav a');
+        
+        // Initialize App
+        function initApp() {
+            // Check if user is already logged in
+            const savedUser = localStorage.getItem('currentUser');
+            if (savedUser) {
+                currentUser = savedUser;
+                usernameInput.value = savedUser;
+                login();
+            } else {
+                showLoginModal();
+            }
+            
+            // Set up event listeners
+            setupEventListeners();
+        }
+        
+        function setupEventListeners() {
+            // Login form
+            loginButton.addEventListener('click', login);
+            usernameInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    login();
+                }
+            });
+            
+            // Navigation
+            navLinks.forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const targetPage = link.id.replace('nav', '').toLowerCase() + 'Page';
+                    showPage(targetPage);
+                    
+                    // Update active nav link
+                    navLinks.forEach(nav => nav.classList.remove('active'));
+                    link.classList.add('active');
+                });
+            });
+            
+            // Detail modal close
+            detailModalClose.addEventListener('click', () => {
+                detailModal.classList.remove('show');
+            });
+            
+            // Close modal when clicking outside
+            window.addEventListener('click', (e) => {
+                if (e.target === loginModal) {
+                    loginModal.classList.remove('show');
+                }
+                if (e.target === detailModal) {
+                    detailModal.classList.remove('show');
+                }
+                if (e.target === whatsappModal) {
+                    whatsappModal.classList.remove('show');
+                }
+            });
+        }
+        
+        function showLoginModal() {
+            loginModal.classList.add('show');
+            usernameInput.focus();
+        }
+        
+        function hideLoginModal() {
+            loginModal.classList.remove('show');
+        }
+        
+        async function login() {
+            const username = usernameInput.value.trim();
+            
+            if (!username) {
+                showError('Username harus diisi');
+                return;
+            }
+            
+            // Show loading state
+            loginButton.innerHTML = 'Memproses... <div class="loading-spinner"></div>';
+            loginButton.disabled = true;
+            loginError.textContent = '';
+            
+            try {
+                // Fetch user data
+                const response = await fetch(WEBHOOK_USER_DATA);
+                if (!response.ok) {
+                    throw new Error('Gagal mengambil data pengguna');
+                }
+                
+                const users = await response.json();
+                const user = users.find(u => u.Username === username);
+                
+                if (!user) {
+                    throw new Error('Username tidak ditemukan');
+                }
+                
+                // Save user data
+                currentUser = username;
+                userData = user;
+                localStorage.setItem('currentUser', username);
+                
+                // Update UI
+                updateDashboard();
+                
+                // Hide login modal
+                hideLoginModal();
+                
+                // Show success notification
+                showNotification(`Login berhasil! Selamat datang ${user.Nama_Lengkap || username}`);
+                
+                // Load transactions
+                await fetchTransactions();
+                
+            } catch (error) {
+                showError(error.message);
+            } finally {
+                // Reset login button
+                loginButton.innerHTML = 'Login';
+                loginButton.disabled = false;
+            }
+        }
+        
+        function showError(message) {
+            loginError.textContent = message;
+        }
+        
+        function showNotification(message, type = 'success') {
+            notificationMessage.textContent = message;
+            
+            // Set notification type
+            notification.className = 'notification';
+            if (type === 'error') {
+                notification.classList.add('error');
+                notification.querySelector('.notification-icon').className = 'fas fa-exclamation-circle notification-icon';
+            } else if (type === 'warning') {
+                notification.classList.add('warning');
+                notification.querySelector('.notification-icon').className = 'fas fa-exclamation-triangle notification-icon';
+            } else if (type === 'info') {
+                notification.classList.add('info');
+                notification.querySelector('.notification-icon').className = 'fas fa-info-circle notification-icon';
+            } else {
+                notification.querySelector('.notification-icon').className = 'fas fa-check-circle notification-icon';
+            }
+            
+            // Show notification
+            notification.classList.add('show');
+            
+            // Auto hide after 3 seconds
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 3000);
+        }
+        
+        function showPage(pageId) {
+            // Hide all pages
+            pageContents.forEach(page => {
+                page.classList.remove('active');
+            });
+            
+            // Show target page
+            document.getElementById(pageId).classList.add('active');
+            
+            // If transactions page, refresh data
+            if (pageId === 'transactionsPage') {
+                fetchTransactions();
+            }
+        }
+        
+        function updateDashboard() {
+            if (!userData) return;
+            
+            // Update balance
+            document.getElementById('userCommissionBalance').textContent = 
+                formatRupiah(userData.Saldo_Komisi_Saat_Ini);
+            
+            // Update referral code
+            document.getElementById('myReferralCode').textContent = userData.Kode_Referal;
+            document.getElementById('captionReferralCode').textContent = userData.Kode_Referal;
+            
+            // Update referral expiry
+            document.getElementById('referralExpiry').textContent = 
+                formatDate(userData.Tanggal_Kadaluarsa);
+            
+            // Update usage and commission rate
+            const usageCount = userData.Jumlah_Penggunaan_Kode || 0;
+            document.getElementById('currentUsageDisplay').textContent = usageCount;
+            
+            // Calculate commission rate based on usage
+            let commissionRate = '5%';
+            if (usageCount >= 30) {
+                commissionRate = '10%';
+                document.getElementById('extendReferralButton').style.display = 'block';
+            } else if (usageCount >= 15) {
+                commissionRate = '8%';
+            }
+            
+            document.getElementById('currentCommissionRate').textContent = commissionRate;
+            
+            // Update milestone progress
+            updateMilestoneProgress(usageCount);
+        }
+        
+        function updateMilestoneProgress(usageCount) {
+            const progressBar = document.getElementById('milestoneProgressBar');
+            const progressPercentage = Math.min((usageCount / 30) * 100, 100);
+            progressBar.style.width = `${progressPercentage}%`;
+            
+            // Update milestone points
+            const point0 = document.getElementById('point0');
+            const point15 = document.getElementById('point15');
+            const point30 = document.getElementById('point30');
+            
+            // Reset all points
+            point0.className = 'milestone-point';
+            point15.className = 'milestone-point';
+            point30.className = 'milestone-point';
+            
+            // Set active points based on usage
+            if (usageCount >= 0) {
+                point0.classList.add('active');
+                if (usageCount < 15) point0.classList.add('current');
+            }
+            
+            if (usageCount >= 15) {
+                point15.classList.add('active');
+                if (usageCount < 30) point15.classList.add('current');
+            }
+            
+            if (usageCount >= 30) {
+                point30.classList.add('active', 'current');
+            }
+        }
+        
+        async function fetchTransactions() {
+            if (!currentUser) return;
+            
+            const transactionList = document.getElementById('transactionList');
+            transactionList.innerHTML = '<div class="loading-state"><i class="fas fa-spinner fa-spin"></i> Memuat transaksi...</div>';
+            
+            try {
+                const response = await fetch(WEBHOOK_TRANSACTIONS);
+                if (!response.ok) {
+                    throw new Error('Gagal mengambil data transaksi');
+                }
+                
+                const allTransactions = await response.json();
+                
+                // Filter transactions for current user only
+                userTransactions = allTransactions.filter(
+                    transaction => transaction.Username_Pemberi_Referal === currentUser
+                );
+                
+                renderTransactions();
+                
+            } catch (error) {
+                transactionList.innerHTML = `<div class="empty-state">${error.message}</div>`;
+                showNotification('Gagal memuat transaksi: ' + error.message, 'error');
+            }
+        }
+        
+        function renderTransactions() {
+            const transactionList = document.getElementById('transactionList');
+            
+            if (userTransactions.length === 0) {
+                transactionList.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-receipt"></i>
+                        <p>Belum ada transaksi</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            // Sort transactions by date (newest first)
+            userTransactions.sort((a, b) => new Date(b.Tgl_Transaksi) - new Date(a.Tgl_Transaksi));
+            
+            transactionList.innerHTML = userTransactions.map(transaction => `
+                <li class="transaction-item" onclick="showTransactionDetail('${transaction.ID_Transaksi}')">
+                    <div class="transaction-details">
+                        <div class="name">${transaction.Nama_Pengguna_Referal}</div>
+                        <div class="date">${formatDate(transaction.Tgl_Transaksi)}</div>
+                    </div>
+                    <div class="transaction-commission">${formatCommission(transaction.Komisi_Pemberi_Referal)}</div>
+                </li>
+            `).join('');
+        }
+        
+        function showTransactionDetail(transactionId) {
+            const transaction = userTransactions.find(t => t.ID_Transaksi === transactionId);
+            if (!transaction) return;
+            
+            detailModalTitle.textContent = 'Detail Transaksi';
+            detailModalContent.innerHTML = `
+                <div class="detail-section">
+                    <div class="detail-section-title">Informasi Transaksi</div>
+                    <div class="detail-item">
+                        <span class="detail-label">ID Transaksi</span>
+                        <span class="detail-value">${transaction.ID_Transaksi}</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">Tanggal</span>
+                        <span class="detail-value">${formatDate(transaction.Tgl_Transaksi)}</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">Nama Pengguna</span>
+                        <span class="detail-value">${transaction.Nama_Pengguna_Referal}</span>
+                    </div>
+                </div>
+                
+                <div class="detail-section">
+                    <div class="detail-section-title">Detail Pembayaran</div>
+                    <div class="detail-item">
+                        <span class="detail-label">Total Pembayaran</span>
+                        <span class="detail-value">${formatRupiah(transaction.Total_Pembayaran)}</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">Diskon Diterima</span>
+                        <span class="detail-value">${formatRupiah(transaction.Diskon_Diterima)}</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">Total Bayar Bersih</span>
+                        <span class="detail-value">${formatRupiah(transaction.Total_Bayar_Bersih)}</span>
+                    </div>
+                </div>
+                
+                <div class="detail-section">
+                    <div class="detail-section-title">Komisi</div>
+                    <div class="detail-item">
+                        <span class="detail-label">Komisi Kamu</span>
+                        <span class="detail-value">${formatCommission(transaction.Komisi_Pemberi_Referal)}</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">Status Komisi</span>
+                        <span class="detail-value">${transaction.Status_Komisi || 'Pending'}</span>
+                    </div>
+                </div>
+            `;
+            
+            detailModal.classList.add('show');
+        }
+        
+        function showBalanceDetail() {
+            if (!userData) return;
+            
+            detailModalTitle.textContent = 'Detail Saldo Komisi';
+            detailModalContent.innerHTML = `
+                <div class="detail-section">
+                    <div class="detail-section-title">Informasi Saldo</div>
+                    <div class="detail-item">
+                        <span class="detail-label">Saldo Saat Ini</span>
+                        <span class="detail-value">${formatRupiah(userData.Saldo_Komisi_Saat_Ini)}</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">Total Komisi Didapatkan</span>
+                        <span class="detail-value">${formatRupiah(userData.Total_Komisi_Didapatkan)}</span>
+                    </div>
+                </div>
+                
+                <div class="note">
+                    <strong>Catatan:</strong> Saldo komisi dapat dicairkan ketika masa kadaluarsa habis. Hubungi admin untuk proses pencairan.
+                </div>
+            `;
+            
+            detailModal.classList.add('show');
+        }
+        
+        function showReferralDetail() {
+            if (!userData) return;
+            
+            detailModalTitle.textContent = 'Detail Kode Referral';
+            detailModalContent.innerHTML = `
+                <div class="detail-section">
+                    <div class="detail-section-title">Informasi Kode</div>
+                    <div class="detail-item">
+                        <span class="detail-label">Kode Referral</span>
+                        <span class="detail-value">${userData.Kode_Referal}</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">Tanggal Aktivasi</span>
+                        <span class="detail-value">${formatDate(userData.Tanggal_Aktivasi)}</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">Tanggal Kadaluarsa</span>
+                        <span class="detail-value">${formatDate(userData.Tanggal_Kadaluarsa)}</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">Status Kode</span>
+                        <span class="detail-value">${userData.Status_Kode}</span>
+                    </div>
+                </div>
+                
+                <div class="detail-section">
+                    <div class="detail-section-title">Statistik Penggunaan</div>
+                    <div class="detail-item">
+                        <span class="detail-label">Jumlah Penggunaan</span>
+                        <span class="detail-value">${userData.Jumlah_Penggunaan_Kode}</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">Persentase Komisi</span>
+                        <span class="detail-value">${(userData.Persentase_Komisi_Aktif * 100).toFixed(0)}%</span>
+                    </div>
+                </div>
+            `;
+            
+            detailModal.classList.add('show');
+        }
+        
+        function showMilestoneDetail() {
+            if (!userData) return;
+            
+            const usageCount = userData.Jumlah_Penggunaan_Kode || 0;
+            let nextTarget = 15;
+            let remaining = 15 - usageCount;
+            
+            if (usageCount >= 15 && usageCount < 30) {
+                nextTarget = 30;
+                remaining = 30 - usageCount;
+            } else if (usageCount >= 30) {
+                nextTarget = 'Maksimal';
+                remaining = 0;
+            }
+            
+            detailModalTitle.textContent = 'Detail Milestone';
+            detailModalContent.innerHTML = `
+                <div class="detail-section">
+                    <div class="detail-section-title">Status Saat Ini</div>
+                    <div class="detail-item">
+                        <span class="detail-label">Penggunaan Saat Ini</span>
+                        <span class="detail-value">${usageCount} transaksi</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">Komisi Saat Ini</span>
+                        <span class="detail-value">${(userData.Persentase_Komisi_Aktif * 100).toFixed(0)}%</span>
+                    </div>
+                </div>
+                
+                <div class="detail-section">
+                    <div class="detail-section-title">Target Milestone</div>
+                    <div class="detail-item">
+                        <span class="detail-label">Milestone 1 (5%)</span>
+                        <span class="detail-value">0-14 penggunaan</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">Milestone 2 (8%)</span>
+                        <span class="detail-value">15-29 penggunaan</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">Milestone 3 (10%)</span>
+                        <span class="detail-value">30+ penggunaan</span>
+                    </div>
+                </div>
+                
+                <div class="detail-section">
+                    <div class="detail-section-title">Progres Selanjutnya</div>
+                    <div class="detail-item">
+                        <span class="detail-label">Target Berikutnya</span>
+                        <span class="detail-value">${nextTarget} penggunaan</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">Kebutuhan untuk Naik Level</span>
+                        <span class="detail-value">${remaining} penggunaan</span>
+                    </div>
+                </div>
+                
+                <div class="note">
+                    <strong>Catatan:</strong> Hanya transaksi dengan nilai minimum <strong>Rp 50.000</strong> yang akan dihitung untuk milestone.
+                </div>
+            `;
+            
+            detailModal.classList.add('show');
+        }
+        
+        function showShareDetail() {
+            if (!userData) return;
+            
+            detailModalTitle.textContent = 'Detail Berbagi';
+            detailModalContent.innerHTML = `
+                <div class="detail-section">
+                    <div class="detail-section-title">Informasi Berbagi</div>
+                    <div class="detail-item">
+                        <span class="detail-label">Kode Referral</span>
+                        <span class="detail-value">${userData.Kode_Referal}</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">Diskon untuk Pengguna</span>
+                        <span class="detail-value">10%</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">Komisi untuk Kamu</span>
+                        <span class="detail-value">${(userData.Persentase_Komisi_Aktif * 100).toFixed(0)}%</span>
+                    </div>
+                </div>
+                
+                <div class="detail-section">
+                    <div class="detail-section-title">Cara Berbagi</div>
+                    <div class="detail-item">
+                        <span class="detail-label">1. Salin Caption</span>
+                        <span class="detail-value">Gunakan tombol "Salin Caption"</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">2. Bagikan</span>
+                        <span class="detail-value">Bagikan ke WhatsApp, Instagram, dll.</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">3. Dapatkan Komisi</span>
+                        <span class="detail-value">Setiap penggunaan kode akan memberikan komisi</span>
+                    </div>
+                </div>
+                
+                <div class="note">
+                    <strong>Tips:</strong> Bagikan kode referral Anda melalui WhatsApp, media sosial, atau pesan teks. Semakin banyak orang yang menggunakan kode Anda, semakin tinggi komisi yang akan Anda dapatkan.
+                </div>
+            `;
+            
+            detailModal.classList.add('show');
+        }
+        
+        function showWhatsAppModal() {
+            whatsappOption = 'pengajuan';
+            whatsappModal.classList.add('show');
+        }
+        
+        function showWhatsAppModalForExtension() {
+            whatsappOption = 'perpanjangan';
+            whatsappModal.classList.add('show');
+        }
+        
+        function closeWhatsAppModal() {
+            whatsappModal.classList.remove('show');
+        }
+        
+        function openWhatsApp(option) {
+            whatsappOption = option;
+            
+            const adminNumber = '6285156973933';
+            let message = '';
+            
+            if (option === 'pengajuan') {
+                message = `Halo Admin, saya ${userData?.Nama_Lengkap || currentUser} ingin mengajukan pertanyaan/masalah terkait program referral Masa Muda Commission.`;
+            } else if (option === 'perpanjangan') {
+                message = `Halo Admin, saya ${userData?.Nama_Lengkap || currentUser} dengan kode referral ${userData?.Kode_Referal || '-'} ingin mengajukan perpanjangan masa aktif kode referral saya karena sudah mencapai milestone tertinggi.`;
+            }
+            
+            const encodedMessage = encodeURIComponent(message);
+            window.open(`https://wa.me/${adminNumber}?text=${encodedMessage}`, '_blank');
+            
+            closeWhatsAppModal();
+        }
+        
+        async function refreshDashboardData() {
+            if (!currentUser) return;
+            
+            const refreshButton = document.querySelector('.refresh-button');
+            refreshButton.classList.add('loading');
+            
+            try {
+                // Fetch updated user data
+                const response = await fetch(WEBHOOK_USER_DATA);
+                if (!response.ok) {
+                    throw new Error('Gagal memperbarui data');
+                }
+                
+                const users = await response.json();
+                const updatedUser = users.find(u => u.Username === currentUser);
+                
+                if (updatedUser) {
+                    userData = updatedUser;
+                    updateDashboard();
+                    showNotification('Data berhasil diperbarui');
+                } else {
+                    throw new Error('Data pengguna tidak ditemukan');
+                }
+                
+            } catch (error) {
+                showNotification('Gagal memperbarui data: ' + error.message, 'error');
+            } finally {
+                refreshButton.classList.remove('loading');
+            }
+        }
+        
+        function copyReferralCode() {
+            if (!userData) return;
+            
+            navigator.clipboard.writeText(userData.Kode_Referal)
+                .then(() => {
+                    showNotification('Kode referral berhasil disalin');
+                })
+                .catch(() => {
+                    showNotification('Gagal menyalin kode referral', 'error');
+                });
+        }
+        
+        function copyCaption() {
+            if (!userData) return;
+            
+            const caption = document.getElementById('shareCaption').textContent;
+            navigator.clipboard.writeText(caption)
+                .then(() => {
+                    showNotification('Caption berhasil disalin');
+                })
+                .catch(() => {
+                    showNotification('Gagal menyalin caption', 'error');
+                });
+        }
+        
+        // Utility functions
+        function formatRupiah(amount) {
+            if (typeof amount === 'string') {
+                // Extract numeric value from string like "4500 (5% dari 90rb)"
+                const numericMatch = amount.match(/(\d+)/);
+                if (numericMatch) {
+                    amount = parseInt(numericMatch[1]);
+                } else {
+                    amount = 0;
+                }
+            }
+            
+            return new Intl.NumberFormat('id-ID', {
+                style: 'currency',
+                currency: 'IDR',
+                minimumFractionDigits: 0
+            }).format(amount);
+        }
+        
+        function formatDate(dateString) {
+            if (!dateString) return '-';
+            const date = new Date(dateString);
+            return date.toLocaleDateString('id-ID', {
+                day: 'numeric',
+                month: 'long',
+                year: 'numeric'
+            });
+        }
+        
+        function formatCommission(commissionText) {
+            if (typeof commissionText === 'string') {
+                // If commission is already formatted, return as is
+                if (commissionText.includes('Rp')) {
+                    return commissionText;
+                }
+                // Extract numeric value
+                const numericMatch = commissionText.match(/(\d+)/);
+                if (numericMatch) {
+                    return formatRupiah(parseInt(numericMatch[1]));
+                }
+            }
+            return formatRupiah(commissionText);
+        }
+        
+        // Initialize the app when the page loads
+        document.addEventListener('DOMContentLoaded', initApp);
+    </script>
+</body>
+</html>
