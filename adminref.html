@@ -824,7 +824,7 @@
             milestone1: 8,
             milestone2: 10
         };
-        let autoDiscountEnabled = true;
+        let autoDiscountEnabled = false;
 
         // Webhook configuration
         const WEBHOOK_BASE = 'https://n8n-uievozfh3got.bgxy.sumopod.my.id/webhook';
@@ -840,13 +840,11 @@
             setupEventListeners();
         });
 
-            function initializeAdminPanel() {
-        console.log('Admin panel initialized');
-        showNotification('Panel admin berhasil dimuat', 'success');
-    
-        // Aktifkan diskon otomatis secara default
-        toggleAutoDiscount();
-        
+        // Initialize the admin panel
+        function initializeAdminPanel() {
+            console.log('Admin panel initialized');
+            showNotification('Panel admin berhasil dimuat', 'success');
+        }
 
         // Set up event listeners
         function setupEventListeners() {
@@ -870,14 +868,11 @@
                 addNewUser();
             });
 
-              // Auto discount toggle
+            // Auto discount toggle
             document.getElementById('autoDiscountToggle').addEventListener('change', function() {
-            autoDiscountEnabled = this.checked;
-            toggleAutoDiscount();
+                autoDiscountEnabled = this.checked;
+                toggleAutoDiscount();
             });
-    
-            // Set toggle menjadi checked secara default
-            document.getElementById('autoDiscountToggle').checked = true;
 
             // Total payment input
             document.getElementById('totalPayment').addEventListener('input', function() {
