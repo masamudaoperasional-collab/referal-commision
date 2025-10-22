@@ -37,11 +37,8 @@
             margin: 0 auto;
             padding: 20px;
             padding-top: 0;
-            opacity: 0; /* Sembunyikan konten utama sampai login */
+            opacity: 1; /* Ubah menjadi 1 agar konten selalu terlihat */
             transition: opacity 0.5s ease-in-out;
-        }
-        .container.loaded {
-            opacity: 1;
         }
         .header {
             text-align: center;
@@ -526,13 +523,53 @@
             color: var(--accent-color);
         }
 
-        /* Page Content */
+        /* Page Content - PERBAIKAN UTAMA DI SINI */
         .page-content {
             display: none;
         }
         .page-content.active {
             display: block;
         }
+
+        /* Container untuk semua halaman */
+        .main-container {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        /* Refresh Button Styles */
+.refresh-button {
+    background: none;
+    border: none;
+    color: var(--primary-color);
+    cursor: pointer;
+    padding: 5px 8px;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    margin-right: 10px;
+}
+
+.refresh-button:hover {
+    background-color: rgba(76, 175, 80, 0.1);
+    transform: rotate(90deg);
+}
+
+.refresh-button:active {
+    transform: rotate(180deg);
+}
+
+.refresh-button.loading {
+    animation: spin 1s linear infinite;
+    pointer-events: none;
+}
+
+.card-header > div {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+        
     </style>
 </head>
 <body>
@@ -541,7 +578,7 @@
         <div class="modal-content">
             <h2>Selamat Datang!</h2>
             <p>Silakan masukkan Username Anda untuk melanjutkan.</p>
-            <input type="text" id="usernameInput" placeholder="Contoh: user123" required>
+            <input type="text" id="usernameInput" placeholder="Username kamu" required>
             <button id="loginButton">Login</button>
             <div id="loginError" class="login-error"></div>
         </div>
@@ -549,210 +586,220 @@
 
     <!-- Header -->
     <div class="header">
-        <h1 id="pageTitle">Panel Referal</h1>
+        <h1 id="pageTitle">Masa Muda Commision </h1>
     </div>
 
-    <!-- Dashboard Page -->
-    <div class="container page-content active" id="dashboardPage">
-        <div class="card">
-            <div class="card-header">
-                <span>Saldo Komisi Anda</span>
+    <!-- Main Container untuk semua halaman -->
+    <div class="main-container">
+        <!-- Dashboard Page -->
+        <div class="container page-content active" id="dashboardPage">
+    <div class="card">
+        <div class="card-header">
+            <span>Saldo Komisi Anda</span>
+            <div>
+                <button class="refresh-button" onclick="refreshDashboardData()" title="Refresh Data">
+                    <i class="fas fa-sync-alt"></i>
+                </button>
                 <i class="fas fa-wallet"></i>
             </div>
-            <h2 id="userCommissionBalance" style="text-align: center; color: var(--primary-color); font-size: 2.2em; margin: 10px 0; font-weight: 700;">Rp 0</h2>
-            <div class="info-item">
-                <span>Total Komisi Didapatkan</span>
-                <strong id="userTotalCommission">Rp 0</strong>
-            </div>
         </div>
+        <h2 id="userCommissionBalance" style="text-align: center; color: var(--primary-color); font-size: 2.2em; margin: 10px 0; font-weight: 700;">Rp 0</h2>
+            </div>
 
-        <div class="card">
-            <div class="card-header">
-                <span>Kode Referal Anda</span>
-                <i class="fas fa-share-alt"></i>
-            </div>
-            <div class="referral-code-wrapper">
-                <span id="myReferralCode" class="referral-code">-----</span>
-                <button class="copy-button" onclick="copyReferralCode()">Salin Kode</button>
-            </div>
-            <div class="info-item" style="margin-top: 20px;">
-                <span>Diskon untuk Penerima</span>
-                <strong>10%</strong>
-            </div>
-            <div class="info-item">
-                <span>Kadaluarsa</span>
-                <strong id="referralExpiry">Memuat...</strong>
-            </div>
-        </div>
-
-        <div class="card">
-            <div class="card-header">
-                <span>Milestone Komisi Anda</span>
-                <i class="fas fa-trophy"></i>
-            </div>
-            <p style="font-size: 0.9em; color: var(--light-text); text-align: center;">Raih target penggunaan untuk persentase komisi lebih besar!</p>
-
-            <div class="milestone-progress">
-                <h3>Progres Komisi Anda</h3>
-                <div class="milestone-track">
-                    <div class="milestone-line">
-                        <div class="milestone-line-fill" id="milestoneProgressBar"></div>
-                    </div>
-                    <!-- Poin 0% -->
-                    <div class="milestone-point" style="left: 0%;" id="point0">5%</div>
-                    <!-- Poin 50% (15/30) -->
-                    <div class="milestone-point" style="left: 50%;" id="point15">8%</div>
-                    <!-- Poin 100% (30/30) -->
-                    <div class="milestone-point" style="left: 100%;" id="point30">10%</div>
-
-                    <div class="milestone-label" style="left: 0%;">
-                        <strong>0 Penggunaan</strong>
-                        <span>Awal (5%)</span>
-                    </div>
-                    <div class="milestone-label" style="left: 50%;">
-                        <strong>15 Penggunaan</strong>
-                        <span>Milestone 8%</span>
-                    </div>
-                    <div class="milestone-label" style="left: 100%;">
-                        <strong>30 Penggunaan</strong>
-                        <span>Milestone 10%</span>
-                    </div>
+            <div class="card">
+                <div class="card-header">
+                    <span>Kode Referal Anda</span>
+                    <i class="fas fa-share-alt"></i>
                 </div>
-                <div class="current-usage-display">
-                    Penggunaan saat ini: <span id="currentUsageDisplay">0</span>
+                <div class="referral-code-wrapper">
+                    <span id="myReferralCode" class="referral-code">-----</span>
+                    <button class="copy-button" onclick="copyReferralCode()">Salin Kode</button>
+                </div>
+                <div class="info-item" style="margin-top: 20px;">
+                    <span>Diskon untuk Penerima</span>
+                    <strong>10%</strong>
+                </div>
+                <div class="info-item">
+                    <span>Kadaluarsa</span>
+                    <strong id="referralExpiry">Memuat...</strong>
                 </div>
             </div>
-            <a href="https://wa.me/6285156973933?text=Halo%20Admin%2C%20saya%20ingin%20mengajukan%20perpanjangan%20kode%20referal%20saya%20%28ABCDEF123%29%20karena%20sudah%20mencapai%20milestone%20tertinggi." target="_blank" class="cta-button" id="extendReferralButton" style="display: none;">Ajukan Perpanjangan Kode</a>
-        </div>
 
-        <div class="caption-card">
-            <h3>Bagikan Sekarang & Dapatkan Komisi!</h3>
-            <p class="caption-text" id="shareCaption">
+            <div class="card">
+                <div class="card-header">
+                    <span>Milestone Komisi Anda</span>
+                    <i class="fas fa-trophy"></i>
+                </div>
+                <p style="font-size: 0.9em; color: var(--light-text); text-align: center;">Raih target penggunaan untuk persentase komisi lebih besar!</p>
+
+                <div class="milestone-progress">
+                    <h3>Progres Komisi Anda</h3>
+                    <div class="milestone-track">
+                        <div class="milestone-line">
+                            <div class="milestone-line-fill" id="milestoneProgressBar"></div>
+                        </div>
+                        <!-- Poin 0% -->
+                        <div class="milestone-point" style="left: 0%;" id="point0">5%</div>
+                        <!-- Poin 50% (15/30) -->
+                        <div class="milestone-point" style="left: 50%;" id="point15">8%</div>
+                        <!-- Poin 100% (30/30) -->
+                        <div class="milestone-point" style="left: 100%;" id="point30">10%</div>
+
+                        <div class="milestone-label" style="left: 0%;">
+                            <strong>0 Penggunaan</strong>
+                            <span>Awal (5%)</span>
+                        </div>
+                        <div class="milestone-label" style="left: 50%;">
+                            <strong>15 Penggunaan</strong>
+                            <span>Milestone 8%</span>
+                        </div>
+                        <div class="milestone-label" style="left: 100%;">
+                            <strong>30 Penggunaan</strong>
+                            <span>Milestone 10%</span>
+                        </div>
+                    </div>
+                    <div class="current-usage-display">
+                        Penggunaan saat ini: <span id="currentUsageDisplay">0</span>
+                    </div>
+                </div>
+                <a href="https://wa.me/6285156973933?text=Halo%20Admin%2C%20saya%20ingin%20mengajukan%20perpanjangan%20kode%20referal%20saya%20%28ABCDEF123%29%20karena%20sudah%20mencapai%20milestone%20tertinggi." target="_blank" class="cta-button" id="extendReferralButton" style="display: none;">Ajukan Perpanjangan Kode</a>
+            </div>
+
+            <div class="caption-card">
+                <h3>Bagikan Sekarang & Dapatkan Komisi!</h3>
+                <p class="caption-text" id="shareCaption">
 Hai teman-teman! 👋 Dapatkan diskon 10% untuk layanan [Nama Aplikasi/Produk Anda] dengan menggunakan kode referal saya: *-----*
 Jangan lewatkan kesempatan ini! Klik link berikut: [Link Website Anda]
 Yuk gabung dan rasakan manfaatnya!
 #diskon #promo #referal #HematBareng #[NamaAplikasi]
-            </p>
-            <button class="caption-copy-button" onclick="copyCaption()">Salin Caption</button>
+                </p>
+                <button class="caption-copy-button" onclick="copyCaption()">Salin Caption</button>
+            </div>
         </div>
-    </div>
 
-    <!-- Transactions Page -->
-    <div class="container page-content" id="transactionsPage">
-        <div class="card">
-            <div class="card-header">
-                <span>Riwayat Penggunaan Kode</span>
+        <!-- Transactions Page -->
+        <!-- Transactions Page -->
+<div class="container page-content" id="transactionsPage">
+    <div class="card">
+        <div class="card-header">
+            <span>Riwayat Penggunaan Kode</span>
+            <div>
+                <button class="refresh-button" onclick="fetchTransactions()" title="Refresh Transaksi">
+                    <i class="fas fa-sync-alt"></i>
+                </button>
                 <i class="fas fa-list-alt"></i>
             </div>
-            <ul class="transaction-list" id="transactionList">
-                <div class="loading-state">
-                    <i class="fas fa-spinner fa-spin"></i> Memuat transaksi...
+        </div>
+        <ul class="transaction-list" id="transactionList">
+            <div class="loading-state">
+                <i class="fas fa-spinner fa-spin"></i> Memuat transaksi...
+            </div>
+        </ul>
+    </div>
+</div>
+
+        <!-- Terms Page -->
+        <div class="container page-content" id="termsPage">
+            <div class="card">
+                <h2>Ketentuan Umum Program Referal</h2>
+                <p>Dengan berpartisipasi dalam program referal [Nama Aplikasi], Anda dianggap telah membaca, memahami, dan menyetujui seluruh syarat dan ketentuan di bawah ini:</p>
+
+                <h3>1. Keuntungan Referal</h3>
+                <ul>
+                    <li><strong>Pemberi Referal (Anda):</strong> Mendapatkan persentase komisi dari total pembayaran customer yang menggunakan kode referal Anda.</li>
+                    <li><strong>Penerima Referal (Customer Baru):</strong> Mendapatkan diskon <strong>10%</strong> dari total pembayaran saat pertama kali menggunakan kode referal Anda.</li>
+                </ul>
+
+                <h3>2. Kode Referal</h3>
+                <ul>
+                    <li>Setiap pengguna akan memiliki satu kode referal unik.</li>
+                    <li>Kode referal berlaku selama <strong>1 bulan (30 hari)</strong> terhitung sejak tanggal aktivasi.</li>
+                    <li>Tidak ada batas maksimal penggunaan kode referal oleh customer yang berbeda selama masa berlaku kode masih aktif.</li>
+                </ul>
+
+                <h3>3. Perhitungan Komisi</h3>
+                <ul>
+                    <li>Komisi dihitung berdasarkan persentase dari total pembayaran bersih (setelah diskon) yang dilakukan oleh customer yang menggunakan kode referal Anda.</li>
+                    <li>Persentase komisi akan berubah sesuai dengan pencapaian milestone.</li>
+                </ul>
+
+                <h3>4. Milestone Komisi</h3>
+                <p>Anda dapat meningkatkan persentase komisi dengan mencapai target penggunaan kode referal:</p>
+                <ul>
+                    <li><strong>Milestone Awal:</strong> 5% komisi (sejak aktivasi kode).</li>
+                    <li><strong>Milestone Kedua:</strong> 8% komisi (setelah <strong>15</strong> kali penggunaan kode).</li>
+                    <li><strong>Milestone Ketiga:</strong> 10% komisi (setelah <strong>30</strong> kali penggunaan kode).</li>
+                </ul>
+
+                <h3>5. Perpanjangan Kode Referal</h3>
+                <ul>
+                    <li>Pengguna yang telah mencapai Milestone Ketiga (10% komisi) berhak mengajukan perpanjangan masa berlaku kode referal.</li>
+                    <li>Pengajuan dilakukan melalui tombol WhatsApp yang tersedia di Panel Referal Anda.</li>
+                    <li>Persetujuan perpanjangan sepenuhnya menjadi kebijakan [Nama Aplikasi].</li>
+                </ul>
+
+                <h3>6. Penarikan Komisi</h3>
+                <ul>
+                    <li>Informasi lebih lanjut mengenai penarikan komisi akan tersedia di halaman Panduan atau dihubungi langsung oleh admin.</li>
+                </ul>
+
+                <h3>7. Ketentuan Lain</h3>
+                <ul>
+                    <li>[Nama Aplikasi] berhak mengubah syarat dan ketentuan ini sewaktu-waktu tanpa pemberitahuan sebelumnya.</li>
+                    <li>Setiap bentuk kecurangan atau penyalahgunaan program referal akan mengakibatkan pembatalan komisi dan penangguhan akun.</li>
+                </ul>
+                <p>Informasi lebih lanjut dapat menghubungi Customer Service kami.</p>
+            </div>
+        </div>
+
+        <!-- Guide Page -->
+        <div class="container page-content" id="guidePage">
+            <div class="card">
+                <h2>Bagaimana Cara Menggunakan Fitur Referal?</h2>
+                <p>Ikuti langkah-langkah mudah di bawah ini untuk mulai mendapatkan komisi dari setiap referal Anda:</p>
+
+                <h3>1. Salin Kode Referal Anda</h3>
+                <ol>
+                    <li>Buka halaman <strong>Dashboard</strong>.</li>
+                    <li>Temukan bagian "Kode Referal Anda".</li>
+                    <li>Klik tombol <strong>"Salin Kode"</strong>. Kode referal Anda akan otomatis tersalin ke clipboard.</li>
+                </ol>
+                <div class="note">
+                    <strong>Tips:</strong> Kode ini memberikan diskon 10% untuk teman Anda saat pertama kali transaksi!
                 </div>
-            </ul>
-        </div>
-    </div>
 
-    <!-- Terms Page -->
-    <div class="container page-content" id="termsPage">
-        <div class="card">
-            <h2>Ketentuan Umum Program Referal</h2>
-            <p>Dengan berpartisipasi dalam program referal [Nama Aplikasi], Anda dianggap telah membaca, memahami, dan menyetujui seluruh syarat dan ketentuan di bawah ini:</p>
+                <h3>2. Bagikan Kode Referal</h3>
+                <ol start="4">
+                    <li>Di halaman <strong>Dashboard</strong>, scroll ke bawah hingga Anda menemukan bagian <strong>"Bagikan Sekarang!"</strong>.</li>
+                    <li>Klik tombol <strong>"Salin Caption"</strong> untuk menyalin contoh teks promosi lengkap dengan kode referal Anda.</li>
+                    <li>Bagikan kode dan caption tersebut ke teman, keluarga, atau media sosial Anda (WhatsApp, Instagram, Facebook, dll.).</li>
+                </ol>
+                <div class="note">
+                    <strong>Ingat:</strong> Semakin banyak Anda berbagi, semakin besar peluang Anda mendapatkan komisi dan mencapai milestone!
+                </div>
 
-            <h3>1. Keuntungan Referal</h3>
-            <ul>
-                <li><strong>Pemberi Referal (Anda):</strong> Mendapatkan persentase komisi dari total pembayaran customer yang menggunakan kode referal Anda.</li>
-                <li><strong>Penerima Referal (Customer Baru):</strong> Mendapatkan diskon <strong>10%</strong> dari total pembayaran saat pertama kali menggunakan kode referal Anda.</li>
-            </ul>
+                <h3>3. Pantau Komisi & Milestone Anda</h3>
+                <ol start="7">
+                    <li>Kembali ke halaman <strong>Dashboard</strong> untuk melihat ringkasan <strong>Saldo Komisi</strong> dan <strong>Progres Milestone</strong> Anda.</li>
+                    <li>Kunjungi halaman <strong>Transaksi</strong> untuk melihat detail penggunaan kode referal Anda (tanggal, nama pengguna, komisi yang didapat).</li>
+                </ol>
 
-            <h3>2. Kode Referal</h3>
-            <ul>
-                <li>Setiap pengguna akan memiliki satu kode referal unik.</li>
-                <li>Kode referal berlaku selama <strong>1 bulan (30 hari)</strong> terhitung sejak tanggal aktivasi.</li>
-                <li>Tidak ada batas maksimal penggunaan kode referal oleh customer yang berbeda selama masa berlaku kode masih aktif.</li>
-            </ul>
+                <h3>4. Tingkatkan Komisi dengan Milestone</h3>
+                <ul>
+                    <li><strong>5% Komisi:</strong> Otomatis Anda dapatkan.</li>
+                    <li><strong>8% Komisi:</strong> Capai <strong>15</strong> kali penggunaan kode referal.</li>
+                    <li><strong>10% Komisi:</strong> Capai <strong>30</strong> kali penggunaan kode referal.</li>
+                </ul>
+                <div class="note">
+                    Setelah mencapai 10% komisi, Anda bisa mengajukan perpanjangan masa aktif kode!
+                </div>
 
-            <h3>3. Perhitungan Komisi</h3>
-            <ul>
-                <li>Komisi dihitung berdasarkan persentase dari total pembayaran bersih (setelah diskon) yang dilakukan oleh customer yang menggunakan kode referal Anda.</li>
-                <li>Persentase komisi akan berubah sesuai dengan pencapaian milestone.</li>
-            </ul>
-
-            <h3>4. Milestone Komisi</h3>
-            <p>Anda dapat meningkatkan persentase komisi dengan mencapai target penggunaan kode referal:</p>
-            <ul>
-                <li><strong>Milestone Awal:</strong> 5% komisi (sejak aktivasi kode).</li>
-                <li><strong>Milestone Kedua:</strong> 8% komisi (setelah <strong>15</strong> kali penggunaan kode).</li>
-                <li><strong>Milestone Ketiga:</strong> 10% komisi (setelah <strong>30</strong> kali penggunaan kode).</li>
-            </ul>
-
-            <h3>5. Perpanjangan Kode Referal</h3>
-            <ul>
-                <li>Pengguna yang telah mencapai Milestone Ketiga (10% komisi) berhak mengajukan perpanjangan masa berlaku kode referal.</li>
-                <li>Pengajuan dilakukan melalui tombol WhatsApp yang tersedia di Panel Referal Anda.</li>
-                <li>Persetujuan perpanjangan sepenuhnya menjadi kebijakan [Nama Aplikasi].</li>
-            </ul>
-
-            <h3>6. Penarikan Komisi</h3>
-            <ul>
-                <li>Informasi lebih lanjut mengenai penarikan komisi akan tersedia di halaman Panduan atau dihubungi langsung oleh admin.</li>
-            </ul>
-
-            <h3>7. Ketentuan Lain</h3>
-            <ul>
-                <li>[Nama Aplikasi] berhak mengubah syarat dan ketentuan ini sewaktu-waktu tanpa pemberitahuan sebelumnya.</li>
-                <li>Setiap bentuk kecurangan atau penyalahgunaan program referal akan mengakibatkan pembatalan komisi dan penangguhan akun.</li>
-            </ul>
-            <p>Informasi lebih lanjut dapat menghubungi Customer Service kami.</p>
-        </div>
-    </div>
-
-    <!-- Guide Page -->
-    <div class="container page-content" id="guidePage">
-        <div class="card">
-            <h2>Bagaimana Cara Menggunakan Fitur Referal?</h2>
-            <p>Ikuti langkah-langkah mudah di bawah ini untuk mulai mendapatkan komisi dari setiap referal Anda:</p>
-
-            <h3>1. Salin Kode Referal Anda</h3>
-            <ol>
-                <li>Buka halaman <strong>Dashboard</strong>.</li>
-                <li>Temukan bagian "Kode Referal Anda".</li>
-                <li>Klik tombol <strong>"Salin Kode"</strong>. Kode referal Anda akan otomatis tersalin ke clipboard.</li>
-            </ol>
-            <div class="note">
-                <strong>Tips:</strong> Kode ini memberikan diskon 10% untuk teman Anda saat pertama kali transaksi!
+                <h3>5. Ajukan Perpanjangan Kode (Jika Sudah 10%)</h3>
+                <ol start="10">
+                    <li>Jika Anda sudah mencapai 30 kali penggunaan (10% komisi), tombol <strong>"Ajukan Perpanjangan Kode"</strong> akan muncul di bagian Milestone pada Dashboard.</li>
+                    <li>Klik tombol tersebut untuk langsung terhubung ke admin kami via WhatsApp dan ajukan perpanjangan.</li>
+                </ol>
             </div>
-
-            <h3>2. Bagikan Kode Referal</h3>
-            <ol start="4">
-                <li>Di halaman <strong>Dashboard</strong>, scroll ke bawah hingga Anda menemukan bagian <strong>"Bagikan Sekarang!"</strong>.</li>
-                <li>Klik tombol <strong>"Salin Caption"</strong> untuk menyalin contoh teks promosi lengkap dengan kode referal Anda.</li>
-                <li>Bagikan kode dan caption tersebut ke teman, keluarga, atau media sosial Anda (WhatsApp, Instagram, Facebook, dll.).</li>
-            </ol>
-            <div class="note">
-                <strong>Ingat:</strong> Semakin banyak Anda berbagi, semakin besar peluang Anda mendapatkan komisi dan mencapai milestone!
-            </div>
-
-            <h3>3. Pantau Komisi & Milestone Anda</h3>
-            <ol start="7">
-                <li>Kembali ke halaman <strong>Dashboard</strong> untuk melihat ringkasan <strong>Saldo Komisi</strong> dan <strong>Progres Milestone</strong> Anda.</li>
-                <li>Kunjungi halaman <strong>Transaksi</strong> untuk melihat detail penggunaan kode referal Anda (tanggal, nama pengguna, komisi yang didapat).</li>
-            </ol>
-
-            <h3>4. Tingkatkan Komisi dengan Milestone</h3>
-            <ul>
-                <li><strong>5% Komisi:</strong> Otomatis Anda dapatkan.</li>
-                <li><strong>8% Komisi:</strong> Capai <strong>15</strong> kali penggunaan kode referal.</li>
-                <li><strong>10% Komisi:</strong> Capai <strong>30</strong> kali penggunaan kode referal.</li>
-            </ul>
-            <div class="note">
-                Setelah mencapai 10% komisi, Anda bisa mengajukan perpanjangan masa aktif kode!
-            </div>
-
-            <h3>5. Ajukan Perpanjangan Kode (Jika Sudah 10%)</h3>
-            <ol start="10">
-                <li>Jika Anda sudah mencapai 30 kali penggunaan (10% komisi), tombol <strong>"Ajukan Perpanjangan Kode"</strong> akan muncul di bagian Milestone pada Dashboard.</li>
-                <li>Klik tombol tersebut untuk langsung terhubung ke admin kami via WhatsApp dan ajukan perpanjangan.</li>
-            </ol>
         </div>
     </div>
 
@@ -768,6 +815,10 @@ Yuk gabung dan rasakan manfaatnya!
         // --- Global State ---
         let userReferralCode = '-----'; // Default value, akan diisi setelah login
         let currentUserName = ''; // Untuk menyimpan username yang berhasil login
+
+        // --- Webhook URLs ---
+        const WEBHOOK_USER_DATA = 'https://n8n-uievozfh3got.bgxy.sumopod.my.id/webhook/get-user-data';
+        const WEBHOOK_TRANSACTIONS = 'https://n8n-uievozfh3got.bgxy.sumopod.my.id/webhook/get-data-transactions';
 
         // --- Helper Functions ---
         function formatRupiah(amount) {
@@ -798,157 +849,271 @@ Yuk gabung dan rasakan manfaatnya!
                 });
         }
 
+        // --- Fetch User Data Function ---
+        // --- Fetch User Data Function ---
+async function fetchUserData(username) {
+    try {
+        console.log('Fetching user data for:', username);
+        
+        // Buat URL dengan parameter username
+        const url = `${WEBHOOK_USER_DATA}?username=${encodeURIComponent(username)}`;
+        console.log('Fetching from URL:', url);
+        
+        const response = await fetch(url);
+        
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        
+        const data = await response.json();
+        console.log('Received raw data:', data);
+        
+        // Handle array response - ambil elemen pertama
+        if (Array.isArray(data) && data.length > 0) {
+            const userData = data[0];
+            
+            // Map field names dari Google Sheets ke frontend
+            const mappedData = {
+                username: userData.Username,
+                balance: userData.Saldo_Komisi_Saat_Ini || 0,
+                total_commission: userData.Total_Komisi_Didapatkan || 0,
+                referral_code: userData.Node_Referal || userData.Kode_Referal || '-----',
+                expiry_date: userData.Tanggal_Kadaluarsa || userData.Expiry_Date || userData.Kadaluarsa || null,
+                usage_count: userData.Jumlah_Penggunaan_Kode || 0
+            };
+            
+            console.log('Mapped user data:', mappedData);
+            return mappedData;
+        } else {
+            throw new Error('Data user tidak ditemukan');
+        }
+        
+    } catch (error) {
+        console.error('Error fetching user data:', error);
+        throw error;
+    }
+}
+
         // --- Update UI Function ---
-        function updateDashboardUI(userData) {
-            document.getElementById('userCommissionBalance').innerText = formatRupiah(userData.balance);
-            document.getElementById('userTotalCommission').innerText = formatRupiah(userData.total_commission);
-            document.getElementById('myReferralCode').innerText = userData.referral_code;
-            userReferralCode = userData.referral_code; // Update global variable
+       // --- Update UI Function ---
+// --- Update UI Function ---
+function updateDashboardUI(userData) {
+    console.log('Updating UI with data:', userData);
+    
+    // AMBIL DATA DARI SESSION STORAGE (jika sudah ada dari transaksi)
+    const totalCommission = parseInt(sessionStorage.getItem('userTotalCommission')) || 0;
+    const transactionCount = parseInt(sessionStorage.getItem('userTransactionCount')) || 0;
+    
+    // Update saldo komisi - GUNAKAN TOTAL DARI TRANSAKSI
+    document.getElementById('userCommissionBalance').innerText = formatRupiah(totalCommission);
+    
+    // HAPUS "Total Komisi Didapatkan" dari HTML atau sembunyikan - PERBAIKI SELECTOR INI
+    const infoItems = document.querySelectorAll('.info-item');
+    infoItems.forEach(item => {
+        const span = item.querySelector('span');
+        if (span && span.textContent.includes('Total Komisi Didapatkan')) {
+            item.style.display = 'none';
+        }
+    });
+    
+    // Update kode referal
+    const referralCode = userData.referral_code || '-----';
+    document.getElementById('myReferralCode').innerText = referralCode;
+    userReferralCode = referralCode;
 
+    // Update tanggal kadaluarsa
+    if (userData.expiry_date) {
+        try {
             const expiryDate = new Date(userData.expiry_date);
-            document.getElementById('referralExpiry').innerText = expiryDate.toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' });
-
-            const currentUsage = userData.usage_count;
-            const milestone1Target = 15; // 8%
-            const milestone2Target = 30; // 10%
-
-            document.getElementById('currentUsageDisplay').innerText = currentUsage;
-
-            const progressBar = document.getElementById('milestoneProgressBar');
-            const point0 = document.getElementById('point0');
-            const point15 = document.getElementById('point15');
-            const point30 = document.getElementById('point30');
-            const extendButton = document.getElementById('extendReferralButton');
-
-            let progressPercentage = (currentUsage / milestone2Target) * 100;
-            if (progressPercentage > 100) progressPercentage = 100;
-
-            progressBar.style.width = `${progressPercentage}%`;
-
-            point0.classList.remove('active', 'current');
-            point15.classList.remove('active', 'current');
-            point30.classList.remove('active', 'current');
-            extendButton.style.display = 'none';
-
-            point0.classList.add('active');
-
-            if (currentUsage >= milestone1Target) {
-                point15.classList.add('active');
-            }
-            if (currentUsage >= milestone2Target) {
-                point30.classList.add('active');
-            }
-
-            if (currentUsage < milestone1Target) {
-                point0.classList.add('current');
-            } else if (currentUsage < milestone2Target) {
-                point15.classList.add('current');
+            if (!isNaN(expiryDate.getTime())) {
+                document.getElementById('referralExpiry').innerText = expiryDate.toLocaleDateString('id-ID', { 
+                    day: 'numeric', 
+                    month: 'short', 
+                    year: 'numeric' 
+                });
             } else {
-                point30.classList.add('current');
-                extendButton.style.display = 'block';
+                document.getElementById('referralExpiry').innerText = userData.expiry_date;
             }
+        } catch (e) {
+            document.getElementById('referralExpiry').innerText = userData.expiry_date;
+        }
+    } else {
+        document.getElementById('referralExpiry').innerText = 'Tidak tersedia';
+    }
 
-            // Update WhatsApp link with dynamic code
-            const whatsappLink = `https://wa.me/6285156973933?text=Halo%20Admin%2C%20saya%20ingin%20mengajukan%20perpanjangan%20kode%20referal%20saya%20%28${userReferralCode}%29%20karena%20sudah%20mencapai%20milestone%20tertinggi.`;
-            document.getElementById('extendReferralButton').href = whatsappLink;
+    // Update milestone progress - GUNAKAN JUMLAH TRANSAKSI
+    const currentUsage = transactionCount; // Menggunakan jumlah transaksi dari sessionStorage
+    const milestone1Target = 15; // 8%
+    const milestone2Target = 30; // 10%
 
-            // Update share caption with dynamic code
-            const defaultCaption = `Hai teman-teman! 👋 Dapatkan diskon 10% untuk layanan [Nama Aplikasi/Produk Anda] dengan menggunakan kode referal saya: *${userReferralCode}*
+    document.getElementById('currentUsageDisplay').innerText = currentUsage;
+
+    const progressBar = document.getElementById('milestoneProgressBar');
+    const point0 = document.getElementById('point0');
+    const point15 = document.getElementById('point15');
+    const point30 = document.getElementById('point30');
+    const extendButton = document.getElementById('extendReferralButton');
+
+    let progressPercentage = (currentUsage / milestone2Target) * 100;
+    if (progressPercentage > 100) progressPercentage = 100;
+
+    progressBar.style.width = `${progressPercentage}%`;
+
+    // Reset semua status
+    point0.classList.remove('active', 'current');
+    point15.classList.remove('active', 'current');
+    point30.classList.remove('active', 'current');
+    extendButton.style.display = 'none';
+
+    // Set status berdasarkan penggunaan
+    point0.classList.add('active');
+
+    if (currentUsage >= milestone1Target) {
+        point15.classList.add('active');
+    }
+    if (currentUsage >= milestone2Target) {
+        point30.classList.add('active');
+    }
+
+    if (currentUsage < milestone1Target) {
+        point0.classList.add('current');
+    } else if (currentUsage < milestone2Target) {
+        point15.classList.add('current');
+    } else {
+        point30.classList.add('current');
+        extendButton.style.display = 'block';
+    }
+
+    // Update WhatsApp link dengan kode dinamis
+    const whatsappLink = `https://wa.me/6285156973933?text=Halo%20Admin%2C%20saya%20ingin%20mengajukan%20perpanjangan%20kode%20referal%20saya%20%28${userReferralCode}%29%20karena%20sudah%20mencapai%20milestone%20tertinggi.`;
+    document.getElementById('extendReferralButton').href = whatsappLink;
+
+    // Update share caption dengan kode dinamis
+    const defaultCaption = `Hai teman-teman! 👋 Dapatkan diskon 10% untuk layanan [Nama Aplikasi/Produk Anda] dengan menggunakan kode referal saya: *${userReferralCode}*
 Jangan lewatkan kesempatan ini! Klik link berikut: [Link Website Anda]
 Yuk gabung dan rasakan manfaatnya!
 #diskon #promo #referal #HematBareng #[NamaAplikasi]`;
-            document.getElementById('shareCaption').innerText = defaultCaption;
+    document.getElementById('shareCaption').innerText = defaultCaption;
 
-            // Setelah data dimuat, tampilkan konten utama
-            document.getElementById('mainContent').classList.add('loaded');
-
-            // Simpan username di sessionStorage agar tidak perlu login lagi
-            sessionStorage.setItem('loggedInUser', currentUserName);
-        }
+    // Simpan username di sessionStorage agar tidak perlu login lagi
+    sessionStorage.setItem('loggedInUser', currentUserName);
+}
 
         // --- Fetch Transactions Function ---
-        async function fetchTransactions() {
-            const loggedInUser = sessionStorage.getItem('loggedInUser');
-            const transactionList = document.getElementById('transactionList');
-            transactionList.innerHTML = `
-                <div class="loading-state">
-                    <i class="fas fa-spinner fa-spin"></i> Memuat transaksi...
-                </div>
-            `; // Tampilkan loading state
+       // --- Fetch Transactions Function ---
+// --- Fetch Transactions Function ---
+async function fetchTransactions() {
+    const loggedInUser = sessionStorage.getItem('loggedInUser');
+    const transactionList = document.getElementById('transactionList');
+    
+    // Tampilkan loading state hanya jika bukan refresh
+    if (!transactionList.innerHTML.includes('loading-state')) {
+        transactionList.innerHTML = `
+            <div class="loading-state">
+                <i class="fas fa-spinner fa-spin"></i> Memuat transaksi...
+            </div>
+        `;
+    }
 
-            if (!loggedInUser) {
-                transactionList.innerHTML = `
-                    <div class="empty-state">
-                        <i class="fas fa-user-lock"></i>
-                        <p>Anda belum login. Silakan <a href="#" onclick="showLoginModal()" style="color: var(--primary-color); text-decoration: none; font-weight: 600;">login</a> untuk melihat transaksi.</p>
-                    </div>
-                `;
-                return;
+    if (!loggedInUser) {
+        transactionList.innerHTML = `
+            <div class="empty-state">
+                <i class="fas fa-user-lock"></i>
+                <p>Anda belum login. Silakan login untuk melihat transaksi.</p>
+            </div>
+        `;
+        return;
+    }
+
+    try {
+        const url = `${WEBHOOK_TRANSACTIONS}?username=${encodeURIComponent(loggedInUser)}`;
+        const response = await fetch(url);
+        
+        if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+        
+        const data = await response.json();
+        console.log('Transactions data:', data);
+        
+        let transactions = Array.isArray(data) ? data : [];
+
+        // HITUNG TOTAL KOMISI DAN JUMLAH TRANSAKSI
+        let totalCommission = 0;
+        let transactionCount = transactions.length;
+
+        transactions.forEach(tx => {
+            // Extract komisi dari string
+            if (tx.Komisi_Pemberi_Referal) {
+                const match = String(tx.Komisi_Pemberi_Referal).match(/(\d+)/);
+                const commission = match ? parseInt(match[0]) : 0;
+                totalCommission += commission;
             }
+        });
 
-            try {
-                // Webhook URL untuk transaksi
-                const n8nWebhookUrl = 'https://n8n-uievozfh3got.bgxy.sumopod.my.id/webhook/get-data-transactions';
+        // SIMPAN DATA UNTUK DASHBOARD
+        sessionStorage.setItem('userTotalCommission', totalCommission);
+        sessionStorage.setItem('userTransactionCount', transactionCount);
 
-                // Contoh data dummy dari n8n berdasarkan username
-                const dummyTransactionData = {
-                    'user123': [
-                        { date: '05 Des 2024', user_name: 'Ana Wulandari', commission: 18000 },
-                        { date: '03 Des 2024', user_name: 'Rahmat Hidayat', commission: 25000 },
-                        { date: '02 Des 2024', user_name: 'Vina Melinda', commission: 10000 },
-                        { date: '28 Nov 2024', user_name: 'Budi Santoso', commission: 15000 },
-                    ],
-                    'user456': [
-                        { date: '01 Des 2024', user_name: 'Dewi Puspita', commission: 12000 },
-                        { date: '29 Nov 2024', user_name: 'Faisal Ramadhan', commission: 8000 },
-                    ]
-                };
+        transactionList.innerHTML = '';
 
-                await new Promise(resolve => setTimeout(resolve, 1000)); // Simulate network delay
-                const transactions = dummyTransactionData[loggedInUser];
-
-                // Untuk implementasi nyata, gunakan kode berikut:
-                /*
-                const response = await fetch(`${n8nWebhookUrl}?username=${loggedInUser}`);
-                const data = await response.json();
-                const transactions = data.transactions; // Sesuaikan dengan struktur respons dari n8n Anda
-                */
-
-                transactionList.innerHTML = ''; // Kosongkan loading state
-
-                if (transactions && transactions.length > 0) {
-                    transactions.forEach(tx => {
-                        const listItem = document.createElement('li');
-                        listItem.classList.add('transaction-item');
-                        listItem.innerHTML = `
-                            <div class="transaction-details">
-                                <div class="name">${tx.user_name}</div>
-                                <div class="date">${tx.date}</div>
-                            </div>
-                            <div class="transaction-commission">${formatRupiah(tx.commission)}</div>
-                        `;
-                        transactionList.appendChild(listItem);
-                    });
-                } else {
-                    transactionList.innerHTML = `
-                        <div class="empty-state">
-                            <i class="fas fa-exchange-alt"></i>
-                            <p>Belum ada transaksi penggunaan kode referal Anda.</p>
-                            <p style="font-size: 0.9em;">Ayo bagikan kode Anda sekarang!</p>
-                        </div>
-                    `;
+        if (transactions.length > 0) {
+            transactions.forEach(tx => {
+                const listItem = document.createElement('li');
+                listItem.classList.add('transaction-item');
+                
+                const userName = tx.Nama_Pengguna_Referal || 'Tidak ada nama';
+                const date = tx.Tgl_Transaksi || 'Tanggal tidak tersedia';
+                
+                // Extract komisi dari string
+                let commission = 0;
+                if (tx.Komisi_Pemberi_Referal) {
+                    const match = String(tx.Komisi_Pemberi_Referal).match(/(\d+)/);
+                    commission = match ? parseInt(match[0]) : 0;
                 }
-
-            } catch (error) {
-                console.error('Error fetching transactions:', error);
-                transactionList.innerHTML = `
-                    <div class="empty-state">
-                        <i class="fas fa-exclamation-circle" style="color: var(--error-color);"></i>
-                        <p>Gagal memuat data transaksi. Silakan coba lagi nanti.</p>
+                
+                // Format tanggal
+                let formattedDate = date;
+                try {
+                    const dateObj = new Date(date);
+                    if (!isNaN(dateObj.getTime())) {
+                        formattedDate = dateObj.toLocaleDateString('id-ID', {
+                            day: 'numeric',
+                            month: 'short', 
+                            year: 'numeric'
+                        });
+                    }
+                } catch (e) {
+                    // Use original date if formatting fails
+                }
+                
+                listItem.innerHTML = `
+                    <div class="transaction-details">
+                        <div class="name">${userName}</div>
+                        <div class="date">${formattedDate}</div>
                     </div>
+                    <div class="transaction-commission">${formatRupiah(commission)}</div>
                 `;
-            }
+                transactionList.appendChild(listItem);
+            });
+        } else {
+            transactionList.innerHTML = `
+                <div class="empty-state">
+                    <i class="fas fa-exchange-alt"></i>
+                    <p>Belum ada transaksi penggunaan kode referal Anda.</p>
+                    <p style="font-size: 0.9em;">Ayo bagikan kode Anda sekarang!</p>
+                </div>
+            `;
         }
+
+    } catch (error) {
+        console.error('Error fetching transactions:', error);
+        transactionList.innerHTML = `
+            <div class="empty-state">
+                <i class="fas fa-exclamation-circle" style="color: var(--error-color);"></i>
+                <p>Gagal memuat data transaksi. Silakan coba lagi nanti.</p>
+            </div>
+        `;
+    }
+}
 
         // --- Login Logic ---
         const loginModal = document.getElementById('loginModal');
@@ -968,94 +1133,167 @@ Yuk gabung dan rasakan manfaatnya!
             loginError.innerText = '';
 
             try {
-                // Webhook URL untuk data user
-                const n8nWebhookUrl = 'https://n8n-uievozfh3got.bgxy.sumopod.my.id/webhook/get-user-data';
-
-                // Contoh data dummy yang akan diterima dari n8n untuk user "user123"
-                const dummyUserData = {
-                    'user123': {
-                        username: 'user123',
-                        balance: 150000,
-                        total_commission: 250000,
-                        referral_code: 'ABCDEF123',
-                        expiry_date: '2024-12-12',
-                        usage_count: 20
-                    },
-                    'user456': {
-                        username: 'user456',
-                        balance: 50000,
-                        total_commission: 80000,
-                        referral_code: 'XYZ789',
-                        expiry_date: '2024-11-30',
-                        usage_count: 10
-                    }
-                };
-
-                // Untuk implementasi nyata, gunakan kode berikut:
-                /*
-                const response = await fetch(`${n8nWebhookUrl}?username=${username}`);
-                const userData = await response.json(); // Asumsikan n8n mengembalikan JSON { username, balance, ... }
-                */
-
-                // Untuk demo, kita simulasikan delay dan respons dari dummy data
-                await new Promise(resolve => setTimeout(resolve, 1500)); // Simulate network delay
-                const userData = dummyUserData[username];
-
-                if (userData) {
-                    currentUserName = username; // Simpan username yang berhasil login
+                const userData = await fetchUserData(username);
+                
+                if (userData && userData.username) {
+                    currentUserName = username;
                     updateDashboardUI(userData);
-                    loginModal.classList.remove('show'); // Sembunyikan modal
-                    document.body.style.overflow = ''; // Aktifkan kembali scroll body
+                    loginModal.classList.remove('show');
+                    document.body.style.overflow = '';
                 } else {
-                    loginError.innerText = 'Username tidak ditemukan atau salah!';
+                    loginError.innerText = 'Username tidak ditemukan atau data tidak valid!';
                 }
 
             } catch (error) {
                 console.error('Error during login:', error);
-                loginError.innerText = 'Terjadi kesalahan saat mencoba login. Silakan coba lagi.';
+                loginError.innerText = `Terjadi kesalahan: ${error.message}. Silakan coba lagi.`;
             } finally {
                 loginButton.disabled = false;
                 loginButton.innerHTML = 'Login';
             }
         }
 
-        // --- Navigation Functions ---
-        function showPage(pageId) {
-            // Sembunyikan semua halaman
-            document.querySelectorAll('.page-content').forEach(page => {
-                page.classList.remove('active');
-            });
-            
-            // Tampilkan halaman yang dipilih
-            document.getElementById(pageId).classList.add('active');
-            
-            // Update judul halaman
-            const pageTitles = {
-                'dashboardPage': 'Panel Referal',
-                'transactionsPage': 'Transaksi Referal',
-                'termsPage': 'Syarat & Ketentuan',
-                'guidePage': 'Panduan Referal'
-            };
-            document.getElementById('pageTitle').textContent = pageTitles[pageId] || 'Panel Referal';
-            
-            // Update navigasi aktif
-            document.querySelectorAll('.footer-nav a').forEach(nav => {
-                nav.classList.remove('active');
-            });
-            
-            const navIds = {
-                'dashboardPage': 'navDashboard',
-                'transactionsPage': 'navTransactions',
-                'termsPage': 'navTerms',
-                'guidePage': 'navGuide'
-            };
-            document.getElementById(navIds[pageId]).classList.add('active');
-            
-            // Jika halaman transaksi, muat data transaksi
-            if (pageId === 'transactionsPage') {
-                fetchTransactions();
-            }
+// --- Refresh Functions ---
+
+// Refresh Dashboard Data
+async function refreshDashboardData() {
+    console.log('Refreshing dashboard data...');
+    
+    const refreshButton = document.querySelector('#dashboardPage .refresh-button');
+    const originalIcon = refreshButton.innerHTML;
+    
+    // Tampilkan loading state
+    refreshButton.classList.add('loading');
+    refreshButton.disabled = true;
+    
+    try {
+        const loggedInUser = sessionStorage.getItem('loggedInUser');
+        if (!loggedInUser) {
+            console.log('User not logged in');
+            return;
         }
+        
+        // Refresh data user
+        const userData = await fetchUserData(loggedInUser);
+        if (userData) {
+            updateDashboardUI(userData);
+        }
+        
+        // Refresh data transaksi untuk update total
+        await fetchTransactions();
+        
+        console.log('Dashboard data refreshed successfully');
+        
+    } catch (error) {
+        console.error('Error refreshing dashboard:', error);
+        alert('Gagal merefresh data. Silakan coba lagi.');
+    } finally {
+        // Hentikan loading state
+        refreshButton.classList.remove('loading');
+        refreshButton.disabled = false;
+        refreshButton.innerHTML = originalIcon;
+    }
+}
+
+// Refresh Transactions dengan loading state
+async function refreshTransactions() {
+    console.log('Refreshing transactions...');
+    
+    const refreshButton = document.querySelector('#transactionsPage .refresh-button');
+    const originalIcon = refreshButton.innerHTML;
+    
+    // Tampilkan loading state
+    refreshButton.classList.add('loading');
+    refreshButton.disabled = true;
+    
+    try {
+        await fetchTransactions();
+        console.log('Transactions refreshed successfully');
+    } catch (error) {
+        console.error('Error refreshing transactions:', error);
+        alert('Gagal merefresh transaksi. Silakan coba lagi.');
+    } finally {
+        // Hentikan loading state
+        refreshButton.classList.remove('loading');
+        refreshButton.disabled = false;
+        refreshButton.innerHTML = originalIcon;
+    }
+}
+
+        // --- Navigation Functions ---
+      // --- Navigation Functions ---
+// --- Navigation Functions ---
+function showPage(pageId) {
+    console.log('Switching to page:', pageId);
+    
+    // Sembunyikan semua halaman
+    document.querySelectorAll('.page-content').forEach(page => {
+        page.classList.remove('active');
+    });
+    
+    // Tampilkan halaman yang dipilih
+    const targetPage = document.getElementById(pageId);
+    if (targetPage) {
+        targetPage.classList.add('active');
+        console.log('Page activated:', pageId);
+    }
+    
+    // Update judul halaman
+    const pageTitles = {
+        'dashboardPage': 'Panel Referal',
+        'transactionsPage': 'Transaksi Referal',
+        'termsPage': 'Syarat & Ketentuan',
+        'guidePage': 'Panduan Referal'
+    };
+    document.getElementById('pageTitle').textContent = pageTitles[pageId] || 'Panel Referal';
+    
+    // Update navigasi aktif
+    document.querySelectorAll('.footer-nav a').forEach(nav => {
+        nav.classList.remove('active');
+    });
+    
+    const navIds = {
+        'dashboardPage': 'navDashboard',
+        'transactionsPage': 'navTransactions',
+        'termsPage': 'navTerms',
+        'guidePage': 'navGuide'
+    };
+    
+    const activeNav = document.getElementById(navIds[pageId]);
+    if (activeNav) {
+        activeNav.classList.add('active');
+    }
+    
+    // Jika halaman transaksi, muat data transaksi
+    if (pageId === 'transactionsPage') {
+        refreshTransactions();
+    }
+    
+    // Jika kembali ke dashboard, refresh data
+    if (pageId === 'dashboardPage') {
+        refreshDashboardData();
+    }
+}
+        
+        // --- Refresh Dashboard Data ---
+function refreshDashboardData() {
+    const totalCommission = parseInt(sessionStorage.getItem('userTotalCommission')) || 0;
+    const transactionCount = parseInt(sessionStorage.getItem('userTransactionCount')) || 0;
+    
+    // Update saldo komisi
+    document.getElementById('userCommissionBalance').innerText = formatRupiah(totalCommission);
+    
+    // Update progress milestone
+    document.getElementById('currentUsageDisplay').innerText = transactionCount;
+    
+    const progressBar = document.getElementById('milestoneProgressBar');
+    const milestone2Target = 30;
+    let progressPercentage = (transactionCount / milestone2Target) * 100;
+    if (progressPercentage > 100) progressPercentage = 100;
+    progressBar.style.width = `${progressPercentage}%`;
+    
+    console.log('Dashboard data refreshed:', { totalCommission, transactionCount });
+}
 
         function showLoginModal() {
             loginModal.classList.add('show');
@@ -1072,28 +1310,32 @@ Yuk gabung dan rasakan manfaatnya!
         });
 
         // Navigation event listeners
-        document.getElementById('navDashboard').addEventListener('click', function(e) {
-            e.preventDefault();
-            showPage('dashboardPage');
-        });
-        
-        document.getElementById('navTransactions').addEventListener('click', function(e) {
-            e.preventDefault();
-            showPage('transactionsPage');
-        });
-        
-        document.getElementById('navTerms').addEventListener('click', function(e) {
-            e.preventDefault();
-            showPage('termsPage');
-        });
-        
-        document.getElementById('navGuide').addEventListener('click', function(e) {
-            e.preventDefault();
-            showPage('guidePage');
-        });
+document.getElementById('navDashboard').addEventListener('click', function(e) {
+    e.preventDefault();
+    showPage('dashboardPage');
+});
+
+document.getElementById('navTransactions').addEventListener('click', function(e) {
+    e.preventDefault();
+    showPage('transactionsPage');
+});
+
+// Tombol refresh di halaman transaksi
+document.querySelector('#transactionsPage .refresh-button').addEventListener('click', function(e) {
+    e.preventDefault();
+    refreshTransactions();
+});
+
+// Tombol refresh di halaman dashboard  
+document.querySelector('#dashboardPage .refresh-button').addEventListener('click', function(e) {
+    e.preventDefault();
+    refreshDashboardData();
+});
 
         // --- On Page Load ---
         document.addEventListener('DOMContentLoaded', () => {
+            console.log('DOM loaded, initializing...');
+            
             // Cek apakah user sudah pernah login di sesi ini
             const storedUser = sessionStorage.getItem('loggedInUser');
             if (storedUser) {
@@ -1104,7 +1346,10 @@ Yuk gabung dan rasakan manfaatnya!
                 // Jika belum, tampilkan modal login
                 showLoginModal();
             }
+            
         });
+        
+        
     </script>
 </body>
 </html>
