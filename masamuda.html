@@ -1,0 +1,1110 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel Referal - [Nama Aplikasi]</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #4CAF50; /* Hijau Utama */
+            --accent-color: #FFC107; /* Kuning Aksen */
+            --bg-color-main: #4CAF50; /* Latar belakang hijau solid untuk body */
+            --card-bg: #ffffff;
+            --text-color: #333;
+            --light-text: #666;
+            --border-color: #e0e0e0;
+            --dark-green: #388E3C;
+            --error-color: #EF5350;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg-color-main);
+            color: var(--text-color);
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden; /* Mencegah scroll horizontal yang tidak diinginkan */
+        }
+        .container {
+            flex-grow: 1;
+            max-width: 500px;
+            margin: 0 auto;
+            padding: 20px;
+            padding-top: 0;
+            opacity: 0; /* Sembunyikan konten utama sampai login */
+            transition: opacity 0.5s ease-in-out;
+        }
+        .container.loaded {
+            opacity: 1;
+        }
+        .header {
+            text-align: center;
+            padding: 20px 0;
+            margin-bottom: 20px;
+            background-color: var(--primary-color);
+            color: white;
+            border-bottom-left-radius: 20px;
+            border-bottom-right-radius: 20px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+        .header h1 {
+            margin: 0;
+            font-size: 1.8em;
+            font-weight: 600;
+        }
+        .card {
+            background-color: var(--card-bg);
+            border-radius: 20px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+            padding: 20px;
+            transition: transform 0.3s ease;
+        }
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            font-weight: 600;
+            font-size: 1.1em;
+            color: var(--dark-green);
+        }
+        .info-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            padding-bottom: 5px;
+            border-bottom: 1px dashed var(--border-color);
+        }
+        .info-item:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+        }
+        .info-item strong {
+            color: var(--text-color);
+            font-weight: 500;
+        }
+        .info-item span {
+            color: var(--light-text);
+            font-weight: 400;
+        }
+        .referral-code-wrapper {
+            background-color: #e8f5e9;
+            border: 1px dashed var(--primary-color);
+            padding: 15px;
+            border-radius: 12px;
+            text-align: center;
+            margin-top: 15px;
+            position: relative;
+        }
+        .referral-code {
+            font-family: 'Roboto Mono', monospace;
+            font-size: 1.7em;
+            font-weight: 700;
+            color: var(--primary-color);
+            letter-spacing: 2px;
+            margin-bottom: 10px;
+            display: block;
+        }
+        .copy-button {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 1em;
+            font-weight: 600;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+        .copy-button:active {
+            background-color: var(--dark-green);
+            transform: scale(0.98);
+        }
+        .copy-button:focus {
+            outline: none;
+        }
+
+        /* Milestone */
+        .milestone-progress {
+            background-color: #e8f5e9;
+            border-radius: 15px;
+            padding: 20px;
+            margin-top: 15px;
+            position: relative;
+            overflow: hidden;
+        }
+        .milestone-progress h3 {
+            margin-top: 0;
+            color: var(--dark-green);
+            font-size: 1.1em;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+        .milestone-track {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+            height: 60px;
+            margin-bottom: 10px;
+            padding: 0 10px;
+        }
+        .milestone-line {
+            position: absolute;
+            height: 4px;
+            background-color: var(--border-color);
+            width: calc(100% - 20px);
+            left: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            border-radius: 2px;
+            z-index: 1;
+        }
+        .milestone-line-fill {
+            position: absolute;
+            height: 100%;
+            background-color: var(--primary-color);
+            width: 0%;
+            border-radius: 2px;
+            transition: width 0.7s ease-in-out;
+        }
+        .milestone-point {
+            width: 20px;
+            height: 20px;
+            background-color: var(--border-color);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 0.7em;
+            font-weight: 700;
+            color: white;
+            position: relative;
+            z-index: 2;
+            transition: background-color 0.5s ease;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .milestone-point.active {
+            background-color: var(--primary-color);
+        }
+        .milestone-point.current {
+             background-color: var(--accent-color);
+             box-shadow: 0 0 0 4px rgba(255,193,7,0.4);
+        }
+        .milestone-label {
+            position: absolute;
+            top: 60px;
+            font-size: 0.8em;
+            color: var(--light-text);
+            text-align: center;
+            width: 80px;
+            left: 50%;
+            transform: translateX(-50%);
+            white-space: nowrap;
+        }
+        .milestone-label strong {
+            display: block;
+            color: var(--text-color);
+            font-weight: 600;
+        }
+        
+        .current-usage-display {
+            text-align: center;
+            margin-top: 50px;
+            font-size: 1em;
+            color: var(--dark-green);
+            font-weight: 500;
+        }
+        .current-usage-display span {
+            font-weight: 700;
+            font-size: 1.1em;
+            color: var(--text-color);
+        }
+
+        .cta-button {
+            display: block;
+            width: 100%;
+            padding: 14px;
+            background-color: var(--primary-color);
+            color: white;
+            text-align: center;
+            border-radius: 12px;
+            text-decoration: none;
+            font-weight: 600;
+            margin-top: 25px;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+        .cta-button:active {
+            background-color: var(--dark-green);
+            transform: scale(0.98);
+        }
+
+        /* Card Bagikan Sekarang */
+        .caption-card {
+            background-color: var(--card-bg);
+            color: var(--text-color);
+            border-radius: 20px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+            margin-top: 20px;
+            padding: 20px;
+            position: relative;
+            text-align: center;
+        }
+        .caption-card h3 {
+            margin-top: 0;
+            font-size: 1.2em;
+            color: var(--dark-green);
+            margin-bottom: 15px;
+            font-weight: 700;
+        }
+        .caption-text {
+            font-size: 0.95em;
+            color: var(--light-text);
+            margin-bottom: 20px;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            border: 1px dashed var(--border-color);
+            padding: 15px;
+            border-radius: 10px;
+            text-align: left;
+        }
+        .caption-copy-button {
+            background-color: var(--accent-color);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 1em;
+            font-weight: 600;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            width: calc(100% - 40px);
+        }
+        .caption-copy-button:active {
+            background-color: #FFB300;
+            transform: scale(0.98);
+        }
+
+        .footer-nav {
+            display: flex;
+            justify-content: space-around;
+            padding: 15px 0;
+            border-top: 1px solid var(--border-color);
+            background-color: var(--card-bg);
+            position: sticky;
+            bottom: 0;
+            width: 100%;
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.05);
+            z-index: 1000;
+            border-top-left-radius: 20px;
+            border-top-right-radius: 20px;
+        }
+        .footer-nav a {
+            color: var(--light-text);
+            text-decoration: none;
+            font-size: 0.8em;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            transition: color 0.3s ease;
+            font-weight: 500;
+        }
+        .footer-nav a.active, .footer-nav a:hover {
+            color: var(--primary-color);
+        }
+        .footer-nav i {
+            font-size: 1.5em;
+            margin-bottom: 5px;
+            transition: color 0.3s ease;
+        }
+
+        /* --- Login Modal Styles --- */
+        .modal {
+            display: none; /* Hidden by default */
+            position: fixed; /* Stay in place */
+            z-index: 2000; /* Sit on top */
+            left: 0;
+            top: 0;
+            width: 100%; /* Full width */
+            height: 100%; /* Full height */
+            overflow: auto; /* Enable scroll if needed */
+            background-color: rgba(0,0,0,0.6); /* Black w/ opacity */
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            transition: opacity 0.3s ease-in-out;
+        }
+        .modal.show {
+            display: flex;
+            opacity: 1;
+        }
+        .modal-content {
+            background-color: var(--card-bg);
+            margin: auto;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            width: 90%;
+            max-width: 400px;
+            text-align: center;
+            animation: slideIn 0.4s ease-out forwards;
+            position: relative;
+        }
+        @keyframes slideIn {
+            from {
+                transform: translateY(-50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+        .modal-content h2 {
+            color: var(--primary-color);
+            margin-top: 0;
+            margin-bottom: 20px;
+            font-size: 1.8em;
+            font-weight: 700;
+        }
+        .modal-content p {
+            color: var(--light-text);
+            margin-bottom: 25px;
+        }
+        .modal-content input[type="text"] {
+            width: calc(100% - 30px);
+            padding: 12px 15px;
+            margin-bottom: 20px;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            font-family: 'Inter', sans-serif;
+            font-size: 1em;
+            box-sizing: border-box;
+            transition: border-color 0.3s ease;
+        }
+        .modal-content input[type="text"]:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.2);
+        }
+        .modal-content button {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 1.1em;
+            font-weight: 600;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+        .modal-content button:active {
+            background-color: var(--dark-green);
+            transform: scale(0.98);
+        }
+        .login-error {
+            color: var(--error-color);
+            font-size: 0.9em;
+            margin-top: 15px;
+            height: 20px; /* Untuk menjaga layout tetap stabil */
+        }
+        .loading-spinner {
+            border: 4px solid rgba(255, 255, 255, 0.3);
+            border-top: 4px solid #fff;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            animation: spin 1s linear infinite;
+            display: inline-block;
+            vertical-align: middle;
+            margin-left: 10px;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Transaction Page Styles */
+        .transaction-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .transaction-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .transaction-item:last-child {
+            border-bottom: none;
+        }
+        .transaction-details {
+            flex-grow: 1;
+        }
+        .transaction-details .name {
+            font-weight: 600;
+            color: var(--text-color);
+        }
+        .transaction-details .date {
+            font-size: 0.85em;
+            color: var(--light-text);
+        }
+        .transaction-commission {
+            font-weight: 700;
+            color: var(--primary-color);
+            font-size: 1.1em;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: var(--light-text);
+            font-size: 1.1em;
+        }
+        .empty-state i {
+            font-size: 3em;
+            color: var(--border-color);
+            margin-bottom: 15px;
+        }
+
+        .loading-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: var(--light-text);
+        }
+
+        /* Terms & Guide Page Styles */
+        .card h2 {
+            color: var(--primary-color);
+            font-size: 1.4em;
+            margin-top: 0;
+            margin-bottom: 15px;
+        }
+        .card h3 {
+            color: var(--text-color);
+            font-size: 1.1em;
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+        .card p, .card ul, .card ol {
+            font-size: 0.95em;
+            color: var(--light-text);
+            margin-bottom: 10px;
+        }
+        .card ol {
+            padding-left: 20px;
+        }
+        .card ol li {
+            margin-bottom: 10px;
+        }
+        .card ul {
+            padding-left: 20px;
+            list-style-type: disc;
+        }
+        .card ul li {
+            margin-bottom: 5px;
+        }
+        .note {
+            background-color: #fffde7;
+            border-left: 4px solid var(--accent-color);
+            padding: 10px 15px;
+            margin-top: 20px;
+            border-radius: 5px;
+            font-size: 0.9em;
+            color: var(--text-color);
+        }
+        .note strong {
+            color: var(--accent-color);
+        }
+
+        /* Page Content */
+        .page-content {
+            display: none;
+        }
+        .page-content.active {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <!-- Login Modal -->
+    <div id="loginModal" class="modal">
+        <div class="modal-content">
+            <h2>Selamat Datang!</h2>
+            <p>Silakan masukkan Username Anda untuk melanjutkan.</p>
+            <input type="text" id="usernameInput" placeholder="Contoh: user123" required>
+            <button id="loginButton">Login</button>
+            <div id="loginError" class="login-error"></div>
+        </div>
+    </div>
+
+    <!-- Header -->
+    <div class="header">
+        <h1 id="pageTitle">Panel Referal</h1>
+    </div>
+
+    <!-- Dashboard Page -->
+    <div class="container page-content active" id="dashboardPage">
+        <div class="card">
+            <div class="card-header">
+                <span>Saldo Komisi Anda</span>
+                <i class="fas fa-wallet"></i>
+            </div>
+            <h2 id="userCommissionBalance" style="text-align: center; color: var(--primary-color); font-size: 2.2em; margin: 10px 0; font-weight: 700;">Rp 0</h2>
+            <div class="info-item">
+                <span>Total Komisi Didapatkan</span>
+                <strong id="userTotalCommission">Rp 0</strong>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <span>Kode Referal Anda</span>
+                <i class="fas fa-share-alt"></i>
+            </div>
+            <div class="referral-code-wrapper">
+                <span id="myReferralCode" class="referral-code">-----</span>
+                <button class="copy-button" onclick="copyReferralCode()">Salin Kode</button>
+            </div>
+            <div class="info-item" style="margin-top: 20px;">
+                <span>Diskon untuk Penerima</span>
+                <strong>10%</strong>
+            </div>
+            <div class="info-item">
+                <span>Kadaluarsa</span>
+                <strong id="referralExpiry">Memuat...</strong>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <span>Milestone Komisi Anda</span>
+                <i class="fas fa-trophy"></i>
+            </div>
+            <p style="font-size: 0.9em; color: var(--light-text); text-align: center;">Raih target penggunaan untuk persentase komisi lebih besar!</p>
+
+            <div class="milestone-progress">
+                <h3>Progres Komisi Anda</h3>
+                <div class="milestone-track">
+                    <div class="milestone-line">
+                        <div class="milestone-line-fill" id="milestoneProgressBar"></div>
+                    </div>
+                    <!-- Poin 0% -->
+                    <div class="milestone-point" style="left: 0%;" id="point0">5%</div>
+                    <!-- Poin 50% (15/30) -->
+                    <div class="milestone-point" style="left: 50%;" id="point15">8%</div>
+                    <!-- Poin 100% (30/30) -->
+                    <div class="milestone-point" style="left: 100%;" id="point30">10%</div>
+
+                    <div class="milestone-label" style="left: 0%;">
+                        <strong>0 Penggunaan</strong>
+                        <span>Awal (5%)</span>
+                    </div>
+                    <div class="milestone-label" style="left: 50%;">
+                        <strong>15 Penggunaan</strong>
+                        <span>Milestone 8%</span>
+                    </div>
+                    <div class="milestone-label" style="left: 100%;">
+                        <strong>30 Penggunaan</strong>
+                        <span>Milestone 10%</span>
+                    </div>
+                </div>
+                <div class="current-usage-display">
+                    Penggunaan saat ini: <span id="currentUsageDisplay">0</span>
+                </div>
+            </div>
+            <a href="https://wa.me/6285156973933?text=Halo%20Admin%2C%20saya%20ingin%20mengajukan%20perpanjangan%20kode%20referal%20saya%20%28ABCDEF123%29%20karena%20sudah%20mencapai%20milestone%20tertinggi." target="_blank" class="cta-button" id="extendReferralButton" style="display: none;">Ajukan Perpanjangan Kode</a>
+        </div>
+
+        <div class="caption-card">
+            <h3>Bagikan Sekarang & Dapatkan Komisi!</h3>
+            <p class="caption-text" id="shareCaption">
+Hai teman-teman! 👋 Dapatkan diskon 10% untuk layanan [Nama Aplikasi/Produk Anda] dengan menggunakan kode referal saya: *-----*
+Jangan lewatkan kesempatan ini! Klik link berikut: [Link Website Anda]
+Yuk gabung dan rasakan manfaatnya!
+#diskon #promo #referal #HematBareng #[NamaAplikasi]
+            </p>
+            <button class="caption-copy-button" onclick="copyCaption()">Salin Caption</button>
+        </div>
+    </div>
+
+    <!-- Transactions Page -->
+    <div class="container page-content" id="transactionsPage">
+        <div class="card">
+            <div class="card-header">
+                <span>Riwayat Penggunaan Kode</span>
+                <i class="fas fa-list-alt"></i>
+            </div>
+            <ul class="transaction-list" id="transactionList">
+                <div class="loading-state">
+                    <i class="fas fa-spinner fa-spin"></i> Memuat transaksi...
+                </div>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Terms Page -->
+    <div class="container page-content" id="termsPage">
+        <div class="card">
+            <h2>Ketentuan Umum Program Referal</h2>
+            <p>Dengan berpartisipasi dalam program referal [Nama Aplikasi], Anda dianggap telah membaca, memahami, dan menyetujui seluruh syarat dan ketentuan di bawah ini:</p>
+
+            <h3>1. Keuntungan Referal</h3>
+            <ul>
+                <li><strong>Pemberi Referal (Anda):</strong> Mendapatkan persentase komisi dari total pembayaran customer yang menggunakan kode referal Anda.</li>
+                <li><strong>Penerima Referal (Customer Baru):</strong> Mendapatkan diskon <strong>10%</strong> dari total pembayaran saat pertama kali menggunakan kode referal Anda.</li>
+            </ul>
+
+            <h3>2. Kode Referal</h3>
+            <ul>
+                <li>Setiap pengguna akan memiliki satu kode referal unik.</li>
+                <li>Kode referal berlaku selama <strong>1 bulan (30 hari)</strong> terhitung sejak tanggal aktivasi.</li>
+                <li>Tidak ada batas maksimal penggunaan kode referal oleh customer yang berbeda selama masa berlaku kode masih aktif.</li>
+            </ul>
+
+            <h3>3. Perhitungan Komisi</h3>
+            <ul>
+                <li>Komisi dihitung berdasarkan persentase dari total pembayaran bersih (setelah diskon) yang dilakukan oleh customer yang menggunakan kode referal Anda.</li>
+                <li>Persentase komisi akan berubah sesuai dengan pencapaian milestone.</li>
+            </ul>
+
+            <h3>4. Milestone Komisi</h3>
+            <p>Anda dapat meningkatkan persentase komisi dengan mencapai target penggunaan kode referal:</p>
+            <ul>
+                <li><strong>Milestone Awal:</strong> 5% komisi (sejak aktivasi kode).</li>
+                <li><strong>Milestone Kedua:</strong> 8% komisi (setelah <strong>15</strong> kali penggunaan kode).</li>
+                <li><strong>Milestone Ketiga:</strong> 10% komisi (setelah <strong>30</strong> kali penggunaan kode).</li>
+            </ul>
+
+            <h3>5. Perpanjangan Kode Referal</h3>
+            <ul>
+                <li>Pengguna yang telah mencapai Milestone Ketiga (10% komisi) berhak mengajukan perpanjangan masa berlaku kode referal.</li>
+                <li>Pengajuan dilakukan melalui tombol WhatsApp yang tersedia di Panel Referal Anda.</li>
+                <li>Persetujuan perpanjangan sepenuhnya menjadi kebijakan [Nama Aplikasi].</li>
+            </ul>
+
+            <h3>6. Penarikan Komisi</h3>
+            <ul>
+                <li>Informasi lebih lanjut mengenai penarikan komisi akan tersedia di halaman Panduan atau dihubungi langsung oleh admin.</li>
+            </ul>
+
+            <h3>7. Ketentuan Lain</h3>
+            <ul>
+                <li>[Nama Aplikasi] berhak mengubah syarat dan ketentuan ini sewaktu-waktu tanpa pemberitahuan sebelumnya.</li>
+                <li>Setiap bentuk kecurangan atau penyalahgunaan program referal akan mengakibatkan pembatalan komisi dan penangguhan akun.</li>
+            </ul>
+            <p>Informasi lebih lanjut dapat menghubungi Customer Service kami.</p>
+        </div>
+    </div>
+
+    <!-- Guide Page -->
+    <div class="container page-content" id="guidePage">
+        <div class="card">
+            <h2>Bagaimana Cara Menggunakan Fitur Referal?</h2>
+            <p>Ikuti langkah-langkah mudah di bawah ini untuk mulai mendapatkan komisi dari setiap referal Anda:</p>
+
+            <h3>1. Salin Kode Referal Anda</h3>
+            <ol>
+                <li>Buka halaman <strong>Dashboard</strong>.</li>
+                <li>Temukan bagian "Kode Referal Anda".</li>
+                <li>Klik tombol <strong>"Salin Kode"</strong>. Kode referal Anda akan otomatis tersalin ke clipboard.</li>
+            </ol>
+            <div class="note">
+                <strong>Tips:</strong> Kode ini memberikan diskon 10% untuk teman Anda saat pertama kali transaksi!
+            </div>
+
+            <h3>2. Bagikan Kode Referal</h3>
+            <ol start="4">
+                <li>Di halaman <strong>Dashboard</strong>, scroll ke bawah hingga Anda menemukan bagian <strong>"Bagikan Sekarang!"</strong>.</li>
+                <li>Klik tombol <strong>"Salin Caption"</strong> untuk menyalin contoh teks promosi lengkap dengan kode referal Anda.</li>
+                <li>Bagikan kode dan caption tersebut ke teman, keluarga, atau media sosial Anda (WhatsApp, Instagram, Facebook, dll.).</li>
+            </ol>
+            <div class="note">
+                <strong>Ingat:</strong> Semakin banyak Anda berbagi, semakin besar peluang Anda mendapatkan komisi dan mencapai milestone!
+            </div>
+
+            <h3>3. Pantau Komisi & Milestone Anda</h3>
+            <ol start="7">
+                <li>Kembali ke halaman <strong>Dashboard</strong> untuk melihat ringkasan <strong>Saldo Komisi</strong> dan <strong>Progres Milestone</strong> Anda.</li>
+                <li>Kunjungi halaman <strong>Transaksi</strong> untuk melihat detail penggunaan kode referal Anda (tanggal, nama pengguna, komisi yang didapat).</li>
+            </ol>
+
+            <h3>4. Tingkatkan Komisi dengan Milestone</h3>
+            <ul>
+                <li><strong>5% Komisi:</strong> Otomatis Anda dapatkan.</li>
+                <li><strong>8% Komisi:</strong> Capai <strong>15</strong> kali penggunaan kode referal.</li>
+                <li><strong>10% Komisi:</strong> Capai <strong>30</strong> kali penggunaan kode referal.</li>
+            </ul>
+            <div class="note">
+                Setelah mencapai 10% komisi, Anda bisa mengajukan perpanjangan masa aktif kode!
+            </div>
+
+            <h3>5. Ajukan Perpanjangan Kode (Jika Sudah 10%)</h3>
+            <ol start="10">
+                <li>Jika Anda sudah mencapai 30 kali penggunaan (10% komisi), tombol <strong>"Ajukan Perpanjangan Kode"</strong> akan muncul di bagian Milestone pada Dashboard.</li>
+                <li>Klik tombol tersebut untuk langsung terhubung ke admin kami via WhatsApp dan ajukan perpanjangan.</li>
+            </ol>
+        </div>
+    </div>
+
+    <!-- Footer Navigation -->
+    <div class="footer-nav">
+        <a href="#" class="active" id="navDashboard"><i class="fas fa-home"></i> Dashboard</a>
+        <a href="#" id="navTransactions"><i class="fas fa-history"></i> Transaksi</a>
+        <a href="#" id="navTerms"><i class="fas fa-file-alt"></i> S&K</a>
+        <a href="#" id="navGuide"><i class="fas fa-question-circle"></i> Panduan</a>
+    </div>
+
+    <script>
+        // --- Global State ---
+        let userReferralCode = '-----'; // Default value, akan diisi setelah login
+        let currentUserName = ''; // Untuk menyimpan username yang berhasil login
+
+        // --- Helper Functions ---
+        function formatRupiah(amount) {
+            return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(amount);
+        }
+
+        function copyReferralCode() {
+            navigator.clipboard.writeText(userReferralCode)
+                .then(() => {
+                    alert('Kode referal berhasil disalin!');
+                })
+                .catch(err => {
+                    console.error('Gagal menyalin kode: ', err);
+                });
+        }
+
+        function copyCaption() {
+            const defaultCaption = `Hai teman-teman! 👋 Dapatkan diskon 10% untuk layanan [Nama Aplikasi/Produk Anda] dengan menggunakan kode referal saya: *${userReferralCode}*
+Jangan lewatkan kesempatan ini! Klik link berikut: [Link Website Anda]
+Yuk gabung dan rasakan manfaatnya!
+#diskon #promo #referal #HematBareng #[NamaAplikasi]`;
+            navigator.clipboard.writeText(defaultCaption)
+                .then(() => {
+                    alert('Caption berhasil disalin!');
+                })
+                .catch(err => {
+                    console.error('Gagal menyalin caption: ', err);
+                });
+        }
+
+        // --- Update UI Function ---
+        function updateDashboardUI(userData) {
+            document.getElementById('userCommissionBalance').innerText = formatRupiah(userData.balance);
+            document.getElementById('userTotalCommission').innerText = formatRupiah(userData.total_commission);
+            document.getElementById('myReferralCode').innerText = userData.referral_code;
+            userReferralCode = userData.referral_code; // Update global variable
+
+            const expiryDate = new Date(userData.expiry_date);
+            document.getElementById('referralExpiry').innerText = expiryDate.toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' });
+
+            const currentUsage = userData.usage_count;
+            const milestone1Target = 15; // 8%
+            const milestone2Target = 30; // 10%
+
+            document.getElementById('currentUsageDisplay').innerText = currentUsage;
+
+            const progressBar = document.getElementById('milestoneProgressBar');
+            const point0 = document.getElementById('point0');
+            const point15 = document.getElementById('point15');
+            const point30 = document.getElementById('point30');
+            const extendButton = document.getElementById('extendReferralButton');
+
+            let progressPercentage = (currentUsage / milestone2Target) * 100;
+            if (progressPercentage > 100) progressPercentage = 100;
+
+            progressBar.style.width = `${progressPercentage}%`;
+
+            point0.classList.remove('active', 'current');
+            point15.classList.remove('active', 'current');
+            point30.classList.remove('active', 'current');
+            extendButton.style.display = 'none';
+
+            point0.classList.add('active');
+
+            if (currentUsage >= milestone1Target) {
+                point15.classList.add('active');
+            }
+            if (currentUsage >= milestone2Target) {
+                point30.classList.add('active');
+            }
+
+            if (currentUsage < milestone1Target) {
+                point0.classList.add('current');
+            } else if (currentUsage < milestone2Target) {
+                point15.classList.add('current');
+            } else {
+                point30.classList.add('current');
+                extendButton.style.display = 'block';
+            }
+
+            // Update WhatsApp link with dynamic code
+            const whatsappLink = `https://wa.me/6285156973933?text=Halo%20Admin%2C%20saya%20ingin%20mengajukan%20perpanjangan%20kode%20referal%20saya%20%28${userReferralCode}%29%20karena%20sudah%20mencapai%20milestone%20tertinggi.`;
+            document.getElementById('extendReferralButton').href = whatsappLink;
+
+            // Update share caption with dynamic code
+            const defaultCaption = `Hai teman-teman! 👋 Dapatkan diskon 10% untuk layanan [Nama Aplikasi/Produk Anda] dengan menggunakan kode referal saya: *${userReferralCode}*
+Jangan lewatkan kesempatan ini! Klik link berikut: [Link Website Anda]
+Yuk gabung dan rasakan manfaatnya!
+#diskon #promo #referal #HematBareng #[NamaAplikasi]`;
+            document.getElementById('shareCaption').innerText = defaultCaption;
+
+            // Setelah data dimuat, tampilkan konten utama
+            document.getElementById('mainContent').classList.add('loaded');
+
+            // Simpan username di sessionStorage agar tidak perlu login lagi
+            sessionStorage.setItem('loggedInUser', currentUserName);
+        }
+
+        // --- Fetch Transactions Function ---
+        async function fetchTransactions() {
+            const loggedInUser = sessionStorage.getItem('loggedInUser');
+            const transactionList = document.getElementById('transactionList');
+            transactionList.innerHTML = `
+                <div class="loading-state">
+                    <i class="fas fa-spinner fa-spin"></i> Memuat transaksi...
+                </div>
+            `; // Tampilkan loading state
+
+            if (!loggedInUser) {
+                transactionList.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-user-lock"></i>
+                        <p>Anda belum login. Silakan <a href="#" onclick="showLoginModal()" style="color: var(--primary-color); text-decoration: none; font-weight: 600;">login</a> untuk melihat transaksi.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            try {
+                // Webhook URL untuk transaksi
+                const n8nWebhookUrl = 'https://n8n-uievozfh3got.bgxy.sumopod.my.id/webhook/get-data-transactions';
+
+                // Contoh data dummy dari n8n berdasarkan username
+                const dummyTransactionData = {
+                    'user123': [
+                        { date: '05 Des 2024', user_name: 'Ana Wulandari', commission: 18000 },
+                        { date: '03 Des 2024', user_name: 'Rahmat Hidayat', commission: 25000 },
+                        { date: '02 Des 2024', user_name: 'Vina Melinda', commission: 10000 },
+                        { date: '28 Nov 2024', user_name: 'Budi Santoso', commission: 15000 },
+                    ],
+                    'user456': [
+                        { date: '01 Des 2024', user_name: 'Dewi Puspita', commission: 12000 },
+                        { date: '29 Nov 2024', user_name: 'Faisal Ramadhan', commission: 8000 },
+                    ]
+                };
+
+                await new Promise(resolve => setTimeout(resolve, 1000)); // Simulate network delay
+                const transactions = dummyTransactionData[loggedInUser];
+
+                // Untuk implementasi nyata, gunakan kode berikut:
+                /*
+                const response = await fetch(`${n8nWebhookUrl}?username=${loggedInUser}`);
+                const data = await response.json();
+                const transactions = data.transactions; // Sesuaikan dengan struktur respons dari n8n Anda
+                */
+
+                transactionList.innerHTML = ''; // Kosongkan loading state
+
+                if (transactions && transactions.length > 0) {
+                    transactions.forEach(tx => {
+                        const listItem = document.createElement('li');
+                        listItem.classList.add('transaction-item');
+                        listItem.innerHTML = `
+                            <div class="transaction-details">
+                                <div class="name">${tx.user_name}</div>
+                                <div class="date">${tx.date}</div>
+                            </div>
+                            <div class="transaction-commission">${formatRupiah(tx.commission)}</div>
+                        `;
+                        transactionList.appendChild(listItem);
+                    });
+                } else {
+                    transactionList.innerHTML = `
+                        <div class="empty-state">
+                            <i class="fas fa-exchange-alt"></i>
+                            <p>Belum ada transaksi penggunaan kode referal Anda.</p>
+                            <p style="font-size: 0.9em;">Ayo bagikan kode Anda sekarang!</p>
+                        </div>
+                    `;
+                }
+
+            } catch (error) {
+                console.error('Error fetching transactions:', error);
+                transactionList.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-exclamation-circle" style="color: var(--error-color);"></i>
+                        <p>Gagal memuat data transaksi. Silakan coba lagi nanti.</p>
+                    </div>
+                `;
+            }
+        }
+
+        // --- Login Logic ---
+        const loginModal = document.getElementById('loginModal');
+        const usernameInput = document.getElementById('usernameInput');
+        const loginButton = document.getElementById('loginButton');
+        const loginError = document.getElementById('loginError');
+
+        async function handleLogin() {
+            const username = usernameInput.value.trim();
+            if (!username) {
+                loginError.innerText = 'Username tidak boleh kosong!';
+                return;
+            }
+
+            loginButton.disabled = true;
+            loginButton.innerHTML = 'Memuat... <span class="loading-spinner"></span>';
+            loginError.innerText = '';
+
+            try {
+                // Webhook URL untuk data user
+                const n8nWebhookUrl = 'https://n8n-uievozfh3got.bgxy.sumopod.my.id/webhook/get-user-data';
+
+                // Contoh data dummy yang akan diterima dari n8n untuk user "user123"
+                const dummyUserData = {
+                    'user123': {
+                        username: 'user123',
+                        balance: 150000,
+                        total_commission: 250000,
+                        referral_code: 'ABCDEF123',
+                        expiry_date: '2024-12-12',
+                        usage_count: 20
+                    },
+                    'user456': {
+                        username: 'user456',
+                        balance: 50000,
+                        total_commission: 80000,
+                        referral_code: 'XYZ789',
+                        expiry_date: '2024-11-30',
+                        usage_count: 10
+                    }
+                };
+
+                // Untuk implementasi nyata, gunakan kode berikut:
+                /*
+                const response = await fetch(`${n8nWebhookUrl}?username=${username}`);
+                const userData = await response.json(); // Asumsikan n8n mengembalikan JSON { username, balance, ... }
+                */
+
+                // Untuk demo, kita simulasikan delay dan respons dari dummy data
+                await new Promise(resolve => setTimeout(resolve, 1500)); // Simulate network delay
+                const userData = dummyUserData[username];
+
+                if (userData) {
+                    currentUserName = username; // Simpan username yang berhasil login
+                    updateDashboardUI(userData);
+                    loginModal.classList.remove('show'); // Sembunyikan modal
+                    document.body.style.overflow = ''; // Aktifkan kembali scroll body
+                } else {
+                    loginError.innerText = 'Username tidak ditemukan atau salah!';
+                }
+
+            } catch (error) {
+                console.error('Error during login:', error);
+                loginError.innerText = 'Terjadi kesalahan saat mencoba login. Silakan coba lagi.';
+            } finally {
+                loginButton.disabled = false;
+                loginButton.innerHTML = 'Login';
+            }
+        }
+
+        // --- Navigation Functions ---
+        function showPage(pageId) {
+            // Sembunyikan semua halaman
+            document.querySelectorAll('.page-content').forEach(page => {
+                page.classList.remove('active');
+            });
+            
+            // Tampilkan halaman yang dipilih
+            document.getElementById(pageId).classList.add('active');
+            
+            // Update judul halaman
+            const pageTitles = {
+                'dashboardPage': 'Panel Referal',
+                'transactionsPage': 'Transaksi Referal',
+                'termsPage': 'Syarat & Ketentuan',
+                'guidePage': 'Panduan Referal'
+            };
+            document.getElementById('pageTitle').textContent = pageTitles[pageId] || 'Panel Referal';
+            
+            // Update navigasi aktif
+            document.querySelectorAll('.footer-nav a').forEach(nav => {
+                nav.classList.remove('active');
+            });
+            
+            const navIds = {
+                'dashboardPage': 'navDashboard',
+                'transactionsPage': 'navTransactions',
+                'termsPage': 'navTerms',
+                'guidePage': 'navGuide'
+            };
+            document.getElementById(navIds[pageId]).classList.add('active');
+            
+            // Jika halaman transaksi, muat data transaksi
+            if (pageId === 'transactionsPage') {
+                fetchTransactions();
+            }
+        }
+
+        function showLoginModal() {
+            loginModal.classList.add('show');
+            document.body.style.overflow = 'hidden';
+            usernameInput.focus();
+        }
+
+        // --- Event Listeners ---
+        loginButton.addEventListener('click', handleLogin);
+        usernameInput.addEventListener('keypress', function(event) {
+            if (event.key === 'Enter') {
+                handleLogin();
+            }
+        });
+
+        // Navigation event listeners
+        document.getElementById('navDashboard').addEventListener('click', function(e) {
+            e.preventDefault();
+            showPage('dashboardPage');
+        });
+        
+        document.getElementById('navTransactions').addEventListener('click', function(e) {
+            e.preventDefault();
+            showPage('transactionsPage');
+        });
+        
+        document.getElementById('navTerms').addEventListener('click', function(e) {
+            e.preventDefault();
+            showPage('termsPage');
+        });
+        
+        document.getElementById('navGuide').addEventListener('click', function(e) {
+            e.preventDefault();
+            showPage('guidePage');
+        });
+
+        // --- On Page Load ---
+        document.addEventListener('DOMContentLoaded', () => {
+            // Cek apakah user sudah pernah login di sesi ini
+            const storedUser = sessionStorage.getItem('loggedInUser');
+            if (storedUser) {
+                // Jika ada user di session, langsung coba muat data
+                usernameInput.value = storedUser;
+                handleLogin();
+            } else {
+                // Jika belum, tampilkan modal login
+                showLoginModal();
+            }
+        });
+    </script>
+</body>
+</html>
